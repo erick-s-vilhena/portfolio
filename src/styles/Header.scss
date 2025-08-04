@@ -1,0 +1,24 @@
+.Header{
+    width: 100%;
+    height: 80px;
+    left: 0;
+    position: fixed;
+    background-color: rgba(0,0,0,0);
+    transition: background-color 0.5s;
+
+    &.ativo{
+        background-color: var(--cor-header);
+    }
+
+    .center{
+        width: 100%;
+        max-width: 1480px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        //background-color: #00ffff1a;
+    }
+}

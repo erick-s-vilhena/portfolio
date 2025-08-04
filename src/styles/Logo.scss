@@ -1,0 +1,23 @@
+.Logo{
+    
+    color: var(--cor-titulo);
+    display: flex;
+    font-size: 30px;
+    font-weight: 600;
+
+    span{
+        color: var(--cor-prima);
+    }
+
+    p{
+        width: 0;
+        overflow: hidden;
+        transition: width 0.5s;
+        //background-color: #00ffff1a;
+
+        &.ativo{
+            width: 56px;
+        }
+    }
+
+}

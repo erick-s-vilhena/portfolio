@@ -1,0 +1,40 @@
+.Btn_Tema{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+
+    .box{
+        width: 50px;
+        height: 24px;
+        border-radius: 12px;
+        display: flex;
+        padding: 4px;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--cor-prima);
+        cursor: pointer;
+        position: relative;
+
+        &:hover{
+            filter: brightness(90%);
+        }
+
+        span{
+            display: flex;
+            color: #fff;
+        }
+
+        .interruptor{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--cor-secun);
+            transition: all 0.5s;
+
+            &.dark{
+                transform: translateX(23px);
+            }
+        }
+    }
+}
