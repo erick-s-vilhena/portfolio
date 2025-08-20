@@ -3,7 +3,7 @@ import '../styles/Logo.scss'
 
 export default function Logo(){
 
-    const [scroll, setScroll] = useState(0)
+    const [logoAtiva, setLogoAtiva] = useState(true)
     const timeout = useRef();
     
     useEffect(()=>{
@@ -11,25 +11,25 @@ export default function Logo(){
           clearTimeout(timeout.current);
     
           timeout.current =  setTimeout(()=>{
-            setScroll(window.scrollY);
+            setLogoAtiva(window.scrollY >= 50 ? true : false);
           }, 100)
         }
     
-        window.addEventListener('wheel', useScroll);
+        window.addEventListener('scroll', useScroll);
     
         return ()=>{
-          window.removeEventListener('wheel', useScroll)
+          window.removeEventListener('scroll', useScroll)
           clearTimeout(timeout.current);
         }
     },[])
 
     return(
-        <div className='Logo'>
+        <a className='Logo' href='./'>
             <span>{'<'}</span>
 
-            <p className={`${!scroll && 'ativo'}`}>ESV</p>
+            <p className={`${!logoAtiva}`}>ESV</p>
 
             <span>{'/>'}</span>
-        </div>
+        </a>
     )
 }

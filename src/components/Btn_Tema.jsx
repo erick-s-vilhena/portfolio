@@ -16,8 +16,8 @@ export default function Btn_Tema(){
   return(
       <div className='Btn_Tema'>
           <div className='box' onClick={mudarTema}>
-              <span><FaSun/></span>
-              <span><FaMoon/></span>
+              <span className='sol'><FaSun/></span>
+              <span className='lua'><FaMoon/></span>
               
               <div className={`interruptor ${theme}`}></div>
           </div>

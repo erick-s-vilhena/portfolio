@@ -2,8 +2,10 @@
     
     color: var(--cor-titulo);
     display: flex;
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 600;
+    user-select: none;
+    text-decoration: none;
 
     span{
         color: var(--cor-prima);
@@ -15,8 +17,16 @@
         transition: width 0.5s;
         //background-color: #00ffff1a;
 
-        &.ativo{
-            width: 56px;
+        &.true{
+            width: 44px;
+        }
+    }
+
+    @media screen and (min-width: 769px) {
+        &:hover{
+            p{
+                width: 44px;
+            }
         }
     }
 

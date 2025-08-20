@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import '../styles/Header.scss'
 import Logo from './Logo';
-import Btn_Tema from './Btn_Tema';
+import Menu from './Menu';
+import Btn_Menu from './Btn_Menu';
 
 export default function Header(){
 
-  const [scroll, setScroll] = useState(0)
+  const [btnMenu, setBtnMenu] = useState(false)
+  const [blurHeader, setBlurHeader] = useState(false)
   const timeout = useRef();
 
   useEffect(()=>{
     function useScroll(){
       clearTimeout(timeout.current);
-
+      
       timeout.current =  setTimeout(()=>{
-        setScroll(window.scrollY);
+        setBlurHeader(window.scrollY >=  50 ? true : false);
       }, 100)
     }
 
@@ -27,11 +29,13 @@ export default function Header(){
 
   
   return(
-    <div className={`Header ${scroll && 'ativo'}`}>
+    <div className={`Header ${blurHeader}`}>
         <div className="center">
           <Logo/>
 
-          <Btn_Tema/>
+          <Menu btnMenu={btnMenu}/>
+
+          <Btn_Menu btnMenu={btnMenu} setBtnMenu={setBtnMenu}/>
         </div>
     </div>
   )
