@@ -19,10 +19,10 @@ export default function Header(){
       }, 100)
     }
 
-    window.addEventListener('wheel', useScroll);
+    window.addEventListener('scroll', useScroll);
 
     return ()=>{
-      window.removeEventListener('wheel', useScroll)
+      window.removeEventListener('scroll', useScroll)
       clearTimeout(timeout.current);
     }
   },[])

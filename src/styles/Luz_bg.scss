@@ -1,0 +1,35 @@
+.Luz_bg{
+    position: fixed;
+    z-index: 0;
+    width: calc(100% - 40px);
+    max-width: 1480px;
+    height: 100vh;
+    aspect-ratio: 1/1;
+
+    .luz{
+        position: absolute;
+        display: flex;
+        width: 50%;
+        max-width: 500px;
+        margin: 10px;
+        border-radius: 50%;
+        filter: blur(200px) opacity(var(--cor-opacity));
+        aspect-ratio: 1/1;
+        background-color: var(--cor-secun);
+        transition: all 2s;
+
+        @media screen and (max-width: 600px) {
+            filter: blur(80px) opacity(var(--cor-opacity));
+        }
+
+        &.um{
+            top: 0%;
+            left: 0%;
+        }
+
+        &.dois{
+            bottom: 0%;
+            right: 0%;
+        }
+    }
+}

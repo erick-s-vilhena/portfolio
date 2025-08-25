@@ -106,7 +106,7 @@ export default function Img_Inicio(){
                         <span/>
                     </div>
 
-                    <span style={{left: '8px', bottom: '-30%', width: '40px', height: '40px', backgroundColor: 'var(--cor-secun)'}}></span>
+                    <span style={{left: '6px', bottom: '-30%', width: '40px', height: '40px', backgroundColor: 'var(--cor-secun)'}}></span>
                 </div>
             </div>
         </div>

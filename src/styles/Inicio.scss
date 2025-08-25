@@ -3,13 +3,17 @@
     display: flex;
     align-items: center;
     flex-shrink: 1;
-    min-width: none;height: 100vh;
+    min-height: 100vh;
+    z-index: 10;
+    position: relative;
+    
 
     .texto{
         color: var(--cor-texto);
         display: flex;
         justify-content: center;
         width: 50%;
+        z-index: 10;
 
         .aux{
 
@@ -142,6 +146,48 @@
         .imagem{
             width: 100%;
             min-width: initial;
+        }
+    }
+
+
+    .seta_continue{
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.4s;
+        filter: opacity(0);
+
+        &.true{
+            filter: opacity(1);
+        }
+
+        @media screen and (max-width:968px){
+            display: none;
+        }
+
+        .seta{
+            position: absolute;
+            font-size: 40px;
+            transform: translateY(-10%);
+            animation: move 1s infinite ease-in alternate;
+            color: var(--cor-prima);
+            cursor: pointer;
+
+            &:hover{
+                color: var(--cor-secun);
+            }
+
+            @keyframes move {
+                100%{
+                    transform: translateY(20%);
+                }
+            }
         }
     }
 }

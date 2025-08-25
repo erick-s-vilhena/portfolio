@@ -1,17 +1,39 @@
-import { RiGithubFill, RiLinkedinFill } from 'react-icons/ri';
+import { RiGithubFill, RiLinkedinFill, RiArrowDownDoubleFill } from 'react-icons/ri';
 import '../styles/Inicio.scss';
 import { CgMail } from 'react-icons/cg';
 import { TbFileCv } from 'react-icons/tb';
 import Img_Inicio from './Img_Inicio';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Inicio(){
+
+  const [displaySeta, setDisplaySeta] = useState(true)
+  const timeout = useRef();
+
+  useEffect(()=>{
+    function useScroll(){
+      clearTimeout(timeout.current);
+      
+      timeout.current =  setTimeout(()=>{
+        setDisplaySeta(window.scrollY >=  50 ? false : true);
+      }, 100)
+    }
+
+    window.addEventListener('scroll', useScroll);
+
+    return ()=>{
+      window.removeEventListener('scroll', useScroll)
+      clearTimeout(timeout.current);
+    }
+  },[])
+
   return(
     <div className='Inicio'>
         <div className="texto">
             <div className="aux">
                 <h3>Olá, sou</h3>
                 <h1>Desenvolvedor <br/> Front-End</h1>
-                <p>Tenho paixão por criar soluções escaláveis e <br/> responsivas, seja bem vindo</p>
+                <p>Tenho paixão por criar soluções escaláveis e <br/> para todos os tipos de usuários.</p>
 
                 <div className='icons_contato'>
                   <a  
@@ -39,6 +61,10 @@ export default function Inicio(){
           <div className="aux">
             <Img_Inicio/>
           </div>
+        </div>
+
+        <div className={`seta_continue ${displaySeta}`}>
+            <RiArrowDownDoubleFill className='seta'/>
         </div>
     </div>
   )

@@ -15,6 +15,11 @@ html, body{
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   transition: all 0.2s;
+  user-select: none;            
+  -webkit-tap-highlight-color: transparent; 
+  -webkit-user-select: none;     
+  -moz-user-select: none;        
+  -ms-user-select: none;         
 }
 
 :root {
@@ -39,7 +44,12 @@ html, body{
   --cor-header: rgba(0,0,0,0.2);
 
   --cor-menu: #1d1d21;
-  --cor-sombra-menu: #000
+  --cor-sombra-menu: #000;
+
+  --cor-opacity: 0.2;
+  @media screen and (max-width: 768px){
+      --cor-opacity: 0.4;
+  }
 }
 
 [data-theme="light"] {
@@ -56,4 +66,6 @@ html, body{
 
   --cor-menu: #fdfdfd;
   --cor-sombra-menu: #808080;
+
+  --cor-opacity: 0.4;
 }

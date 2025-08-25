@@ -23,14 +23,32 @@
         }
     }
 
+    div{
+        .tela{
+            background-color: var(--cor-bg);
+            position: absolute;
+        }
+
+        span{
+            animation: tamanho 3s linear infinite alternate-reverse;
+        }
+
+        @keyframes tamanho {
+            0%, 30%{
+                max-width: 100%;
+            }
+            100%{
+                max-width: 0%;
+            }
+        }
+    }
+
     .computador{
         position: absolute;
         left: 10%;
         top: 10%;
 
         .tela{
-            background-color: var(--cor-bg);
-            position: absolute;
             top: 9px;
             left: 8px;
             width: 225px;
@@ -41,13 +59,7 @@
                 border-radius: 5px;
                 display: block;
                 position: absolute;
-                animation: tamanho 2s linear infinite alternate;
 
-                @keyframes tamanho {
-                    100%{
-                        width: 0;
-                    }
-                }
             }
 
             .aux{
@@ -74,8 +86,6 @@
         top: 40%;
 
         .tela{
-            background-color: var(--cor-bg);
-            position: absolute;
             top: 4px;
             left: 22px;
             width: 174px;
@@ -86,13 +96,6 @@
                 border-radius: 5px;
                 display: block;
                 position: absolute;
-                animation: tamanho 2s linear infinite alternate;
-
-                @keyframes tamanho {
-                    100%{
-                        width: 0;
-                    }
-                }
             }
 
             .aux{
@@ -123,8 +126,6 @@
         }
 
         .tela{
-            background-color: var(--cor-bg);
-            position: absolute;
             top: 4px;
             left: 4px;
             width: 128px;
@@ -135,13 +136,7 @@
                 border-radius: 5px;
                 display: block;
                 position: absolute;
-                animation: tamanho 2s linear infinite alternate;
 
-                @keyframes tamanho {
-                    100%{
-                        width: 0;
-                    }
-                }
             }
 
             .aux{
@@ -172,11 +167,10 @@
         }
 
         .tela{
-            background-color: var(--cor-bg);
-            position: absolute;
             top: 4px;
-            left: 1px;
-            width: 54px;
+            left: 2px;
+            width: 52px;
+            border-radius: 2px;
             height: 90px;
             overflow: hidden;
 
@@ -185,13 +179,7 @@
                 border-radius: 5px;
                 display: block;
                 position: absolute;
-                animation: tamanho 2s linear infinite alternate;
 
-                @keyframes tamanho {
-                    100%{
-                        width: 0;
-                    }
-                }
             }
 
             .aux{
@@ -203,7 +191,7 @@
                 justify-content: left;
 
                 span{
-                    margin-right: 5px;
+                    margin-right: 4px;
                     position: relative;
                     width: 8px;
                     background-color: var(--cor-prima);
