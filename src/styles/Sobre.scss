@@ -1,0 +1,104 @@
+.Sobre{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+    padding-top: 80px;
+    z-index: 10;
+    align-items: center;
+    position: relative;
+    margin-bottom: 50px;
+    //background-color: rgba(0, 255, 255, 0.100);
+
+    @media screen and (max-width: 968px) {
+        height: auto;
+        padding-top: 50px;
+    }
+
+    h1{
+        text-align: center;
+        font-size: clamp(26px, 4vw, 42px);
+        color: var(--cor-titulo);
+        margin-bottom: 30px;
+    }
+
+    .menu-sobre{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-shrink: 0;
+
+        nav{
+            width: 700px;
+            height: 100%;
+            display: flex;
+            padding: 5px;
+            justify-content: space-between;
+            border: 1px solid rgb(61, 61, 61);
+            border-radius: 30px;
+            background-color: var(--cor-secun-dk);
+            backdrop-filter: opacity(0);
+            backdrop-filter: blur(1px);
+
+            button{
+                width: 33%;
+                height: 50px;
+                font-weight: bold;
+                color: var(--cor-titulo);
+                border-radius: 25px;
+                background-color: transparent;
+                cursor: pointer;
+                border: none;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                gap: 10px;
+                @media screen and (max-width: 600px) {
+                    flex-direction: column;
+                    padding: 10px 0;
+                    height: auto;
+                    font-size: 14px;
+                }
+
+                &:hover{
+                    color: var(--cor-texto);
+                    background-color: var(--cor-secun-dk);
+                }
+                
+                &.true{
+                    background-color: var(--cor-secun);
+                    filter: brightness(100%);
+                    cursor: initial;
+                    color: var(--cor-titulo);
+                    
+                }
+                svg{
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+
+    .container-slides{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow-x: hidden;
+
+        .aux-slides{
+            width: calc(100% * 3);
+            display: flex;
+            transition: all 1s;
+            //transform: translateX(calc((-100% / 3)));
+
+            .slide{
+                width: calc(100% / 3);
+                transition-delay: 0.7s;  
+            }
+        }
+    }
+}

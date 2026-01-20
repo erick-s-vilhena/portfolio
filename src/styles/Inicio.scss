@@ -3,10 +3,11 @@
     display: flex;
     align-items: center;
     flex-shrink: 1;
-    min-height: 100vh;
+    height: 100vh;
+    min-height: 520px;
     z-index: 10;
     position: relative;
-    
+    margin-bottom: 50px;
 
     .texto{
         color: var(--cor-texto);
@@ -124,9 +125,11 @@
         flex-shrink: 0;
         display: flex;
         justify-content: center;
+        overflow: hidden;
 
         .aux{
             width: 100%;
+            max-width: 360px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -137,6 +140,7 @@
 
     @media screen and (max-width: 968px) {   
         flex-direction: column;
+        height: auto;
 
         .texto{
             padding: 100px 0;

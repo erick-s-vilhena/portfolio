@@ -25,15 +25,19 @@ export default function Inicio(){
       window.removeEventListener('scroll', useScroll)
       clearTimeout(timeout.current);
     }
-  },[])
+  },[]);
+
+  function rolarScroll(){
+    document.getElementById("sobre")?.scrollIntoView({ behavior: "smooth" });
+  }
 
   return(
     <div className='Inicio'>
         <div className="texto">
-            <div className="aux">
+            <div className="aux hidden lf">
                 <h3>Olá, sou</h3>
                 <h1>Desenvolvedor <br/> Front-End</h1>
-                <p>Tenho paixão por criar soluções escaláveis e <br/> para todos os tipos de usuários.</p>
+                <p>Tenho paixão por criar soluções escaláveis e <br/> para todos os tipos de dispositivos.</p>
 
                 <div className='icons_contato'>
                   <a  
@@ -58,13 +62,13 @@ export default function Inicio(){
         </div>
 
         <div className="imagem">
-          <div className="aux">
+          <div className="aux hidden rt">
             <Img_Inicio/>
           </div>
         </div>
 
         <div className={`seta_continue ${displaySeta}`}>
-            <RiArrowDownDoubleFill className='seta'/>
+            <RiArrowDownDoubleFill className='seta' onClick={()=> rolarScroll()}/>
         </div>
     </div>
   )

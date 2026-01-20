@@ -1,0 +1,206 @@
+.Sobre-mim{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    padding-top: 80px;
+    //background-color: rgba(0, 255, 255, 0.100);
+
+    &.true{
+        height: 600px;
+        overflow: hidden;
+    }
+
+    .texto{
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        
+        .aux{
+            width: 100%;
+            max-width: 500px;
+            text-align: justify;
+
+            h3{
+                font-size: clamp(24px, 4vw, 38px);
+                color: var(--cor-titulo);
+            }
+            h2{
+                font-size: clamp(38px, 4vw, 50px);
+                color: var(--cor-titulo);
+            }
+            p{
+                color: var(--cor-texto);
+                font-size: clamp(16px, 4vw, 20px);
+                margin: 20px 0;
+            }
+
+            .contianer-btn{
+                display: flex;
+                margin: 20px 0;
+                gap: 20px;
+                //background-color: rgba(0, 255, 255, 0.100);
+
+                @media screen and (max-width: 869px) {
+                    justify-content: center;
+                }
+
+                button{
+                    width: 160px;
+                    height: 40px;
+                    background-color: transparent;
+                    border: 1px solid var(--cor-secun);
+                    color: var(--cor-titulo);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                    cursor: pointer;
+
+                    svg{
+                        font-size: 20px;
+                    }
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 100%;
+                        width: 0; /* começa sem largura */
+                        background: var(--cor-secun);
+                        transition: width 0.5s ease-out; /* anima o preenchimento */
+                        z-index: 0;
+                    }
+
+                    /* faz o fundo crescer da esquerda pra direita */
+                    &:hover::before {
+                        width: 100%;
+                    }
+
+                    /* garante que o texto fique acima */
+                    & {
+                        position: relative;
+                        z-index: 1;
+                    }
+                    & span,  &  {
+                        position: relative;
+                        z-index: 1;
+                    }
+                    
+                    span{
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+
+                }
+            }
+        }
+    }
+
+    .perfil{
+        width: 100%;
+        padding: 20px 0px 20px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        @media screen and (max-width: 869px) {
+            padding: 20px;
+        }
+
+
+        .aux{
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1;
+            position: relative;
+            //background-color: rgba(255, 60, 00, 0.100);
+            
+            
+            img{
+                width: 90%;
+                z-index: 30;
+                border-radius: 50%;
+                box-shadow: 0px 0px 20px 0.5px var(--cor-prima);
+            }
+
+             .giro{
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);//rotate(45deg);
+                    width: 90%;
+                    aspect-ratio: 1 / 1;    
+                    z-index: 10;
+
+                    .quadrado{
+                        position: absolute;
+                        width: 30%;
+                        aspect-ratio: 1 / 1;
+                        border: 3px solid var(--cor-prima);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        @mixin pulsar($escala: 1.1, $duracao: 1s) {
+                            @keyframes pulsar {
+                              45% { transform: scale(1); }
+                              50% { transform: scale($escala); }
+                              55% { transform: scale(1); }
+                            }
+                            &{
+                                animation: pulsar $duracao infinite;
+                            }
+                        }
+
+                        &.um{
+                            top: 0;
+                            left: 0;
+                            @include pulsar(1.1, 3s)
+                        }
+
+                        &.dois{
+                            bottom: 0;
+                            right: 0;
+                            @include pulsar(1.1, 4s)
+                        }
+
+                        .linha{
+                            width: 80%;
+                            height: 80%;
+                            
+                            &.um{
+                                border-top: 4px solid var(--cor-secun);
+                                border-left: 4px solid var(--cor-secun);
+                            }
+
+                            &.dois{
+                                border-bottom: 4px solid var(--cor-secun);
+                                border-right: 4px solid var(--cor-secun);
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    @media screen and (max-width: 868px) {
+        flex-direction: column;
+        align-items: center;
+
+        .texto{
+            width: 100%;
+
+            h3, h2{
+                text-align: center;
+            }
+        }
+    }
+}

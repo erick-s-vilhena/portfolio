@@ -24,7 +24,7 @@ export default function Logo(){
     },[])
 
     return(
-        <a className='Logo' href='./'>
+        <a className='Logo hidden lf' href='./'>
             <span>{'<'}</span>
 
             <p className={`${!logoAtiva}`}>ESV</p>

@@ -1,0 +1,81 @@
+.HabilidadeOpen{
+    padding:20px;
+    background-color: #00000097;
+    backdrop-filter: blur(10px);
+    position: fixed;
+    width: 100%;
+    height: 100dvh;
+    top: 0;
+    left: 0;
+    z-index: 100 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .single-habilidade{
+        width: 100%;
+        max-width: 500px;
+        padding: 40px 20px;
+        background-color: var(--cor-pop);
+        position: relative;
+        border-radius: 10px;
+
+        svg{
+            font-size: 40px;
+            flex-shrink: 0;
+            color: var(--cor-secun);
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            &:hover{
+                filter: brightness(80%);
+            }
+        }
+        
+        .img{
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto;
+            aspect-ratio: 1/1;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 10px;
+
+            img{
+                height: 100%;
+                width: auto;
+            }
+        }
+
+        .info{
+            width: 100%;
+            color: var(--cor-texto);
+
+            h1{
+                width: 100%;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            p{
+                text-align: justify;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .img{
+                max-width: 140px;
+            }
+
+            h1{
+                font-size: 26px;
+            }
+
+            p{
+                font-size: 14px;
+            }
+        }
+    }
+}

@@ -9,10 +9,10 @@ export default function Menu({btnMenu}){
                 <span className="square"></span>
               </div>
 
-              <div className="Sobre">Sobre mim
+              <div className="Sobre-menu">Sobre mim
                 <span className="square"></span>
               </div>
-              <div className="Projetos">Meus projetos
+              <div className="Meus-Projetos">Meus projetos
                 <span className="square"></span>
               </div>
               <div className="Contatos">Entre em contato
