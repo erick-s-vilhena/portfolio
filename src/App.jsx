@@ -8,6 +8,7 @@ import CertificadoAberto from './components/CertificadoAberto'
 import HabilidadeOpen from './components/HabilidadeOpen'
 import { useContexto } from './context/Contexto'
 import Projetos from './components/Projetos'
+import MenuLateral from './components/MenuLateral'
 
 function App() {
 
@@ -52,6 +53,8 @@ function App() {
         <Sobre/>
 
         <Projetos/>
+
+        <MenuLateral/>
     </div>
   )
 }
