@@ -1,4 +1,39 @@
 .Projetos{
     width: 100%;
     background-color: rgba(255, 60, 00, 0.100);
+
+    h1{
+        font-size: 2.5rem;
+        color: #fff;
+        text-align: center;
+        padding: 2rem 0;
+    }
+
+    .contianer_projetos{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 0 4rem 0;
+        overflow: hidden;
+        background-color: rgba(255, 60, 00, 0.100);
+
+        .aux_projetos{
+            width: 100%;
+            display: flex;
+            justify-content: right;
+            gap: 20px;
+            align-items: center;
+            background-color: rgba(255, 60, 00, 0.100);
+
+            .projeto{
+                width: 300px;
+                min-width: 300px;
+                height: 200px;
+                overflow: hidden;
+                background-color: rgba(255, 60, 00, 0.100);
+                border-radius: 10px;
+            }
+        }
+    }
 }

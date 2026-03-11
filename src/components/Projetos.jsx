@@ -1,11 +1,22 @@
-import '../styles/Projetos.scss'
+ import '../styles/Projetos.scss';
+import  projeto_10  from '../img/projeto_10.png';
 
 export default function Projetos(){
    return (
        <div className='Projetos'>
-            <h1>A Jornada até aqui</h1>
+          {/* <h1 className='hidden bt'>A jornada até aqui</h1> */}
 
-            <img src='https://photos.fife.usercontent.google.com/pw/AP1GczNovj8PGZ_dimINMuZP6UUjMBm7VEjrshlLuEgjAAEtx3uFUaf4lvK-=w654-h869-s-no-gm?authuser=0'/>
+          {/* <div className="contianer_projetos">
+               <div className="aux_projetos">
+                    <div className="projeto hidden lf">
+
+                         <div className="img">
+                              <img src={projeto_10} alt="" />
+                         </div>
+                         
+                    </div>
+               </div>
+          </div> */}
        </div>
 )
-}
+} 
