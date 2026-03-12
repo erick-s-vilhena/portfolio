@@ -1,5 +1,5 @@
 .Sobre{
-    width: calc(100% - 50px);
+    width: calc(100% - 32px);
     display: flex;
     flex-direction: column;
     flex-shrink: 1;
@@ -7,7 +7,6 @@
     z-index: 10;
     align-items: center;
     position: relative;
-    margin-bottom: 50px;
     //background-color: rgba(0, 255, 255, 0.100);
 
     @media screen and (max-width: 768px) {
@@ -97,6 +96,7 @@
             width: calc(100% * 3);
             display: flex;
             transition: all 1s;
+            gap: 2px;
             //transform: translateX(calc((-100% / 3)));
 
             .slide{

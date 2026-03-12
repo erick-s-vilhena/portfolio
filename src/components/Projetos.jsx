@@ -1,11 +1,58 @@
+import { useEffect, useRef } from 'react';
 import '../styles/Projetos.scss'
 
 export default function Projetos(){
-   return (
-       <div className='Projetos'>
-            <h1>A Jornada até aqui</h1>
+     const containerRef = useRef(null);
+     const sectionRef = useRef(null);
 
-            <img src='https://photos.fife.usercontent.google.com/pw/AP1GczNovj8PGZ_dimINMuZP6UUjMBm7VEjrshlLuEgjAAEtx3uFUaf4lvK-=w654-h869-s-no-gm?authuser=0'/>
+     useEffect(() => {
+     const section = sectionRef.current;
+     const container = containerRef.current;
+
+     if (!section || !container) return;
+
+     const observer = new IntersectionObserver(
+          ([entry]) => {
+          if (entry.isIntersecting) {
+               container.scrollTo({
+               left: container.scrollWidth,
+               behavior: "smooth",
+               });
+          } else {
+               container.scrollTo({
+               left: 0,
+               behavior: "auto",
+               });
+          }
+          },
+          {
+          threshold: 0.5, // ativa quando 50% da seção estiver visível
+          }
+     );
+
+     observer.observe(section);
+
+     return () => observer.disconnect();
+     }, []);
+
+   return (
+       <div className='Projetos' id='projetos' ref={sectionRef} >
+            <h1 className='hidden bt'>A Jornada até aqui</h1>
+
+            <div className="container" ref={containerRef}>
+                    <div className="auxlixar">
+                         <div className="sigle-projetos"></div>
+
+                         <div className="sigle-projetos"></div>
+
+                         <div className="sigle-projetos"></div>
+
+                         <div className="sigle-projetos"></div>
+
+                         <div className="sigle-projetos"></div>
+                    </div>
+            </div>
+
        </div>
 )
 }

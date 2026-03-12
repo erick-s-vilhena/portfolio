@@ -1,4 +1,64 @@
 .Projetos{
-    width: 100%;
-    background-color: rgba(255, 60, 00, 0.100);
+    position: relative;
+    width: calc(100% - 32px);
+    margin-bottom: 100px;
+    z-index: 2;
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
+
+    h1{
+        text-align: center;
+        font-size: clamp(26px, 4vw, 42px);
+        color: var(--cor-titulo);
+        padding: 50px 0;
+    }
+
+    .container{
+        width: 100%;
+        overflow-x: auto;
+        
+
+        &::-webkit-scrollbar {
+        height: 8px; /* horizontal */
+        width: 8px;  /* vertical */
+        }
+
+        &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 999px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+        background: var(--cor-secun);
+        border-radius: 999px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+        background: var(--cor-secun);
+        }
+
+        & {
+        scrollbar-width: thin;
+        scrollbar-color: var(--cor-secun) transparent;
+        }
+                
+
+        .auxlixar{
+            min-width: 2000px;
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            gap: 20px;
+            padding: 10px 0;
+
+            .sigle-projetos{
+                width: 300px;
+                height: 400px;
+                background-color: var(--cor-pop);
+                border-radius: 20px;
+            }
+        }
+    }
 }

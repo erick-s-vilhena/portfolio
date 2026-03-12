@@ -4,11 +4,66 @@
     right: 0;
     height: 100%;
     width: 50px;
-    background-color: rgba(173, 91, 91, 0.4);
+    //background-color: rgba(173, 91, 91, 0.4);
     color: #fff;
     z-index: 999;
 
     @media screen and (max-width: 768px) {
         display: none;
+    }
+
+    .container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        gap: 30px;
+
+        button{
+            width: 16px;
+            height: 16px;
+            position: relative;
+            top: 100px;
+            background-color: transparent;
+            border: 3px solid var(--cor-secun);
+            cursor: pointer;
+            filter: opacity(0);
+            transition: all 0.3s ease;
+
+            &:hover{
+                transform: rotate(45deg);
+                background-color: var(--cor-secun);
+                width: 20px;
+                height: 20px;
+            }
+
+            &.ativo{
+                transform: rotate(45deg);
+                background-color: var(--cor-prima);
+                border-color: var(--cor-prima);
+                width: 20px;
+                height: 20px;
+            }
+
+            @mixin sugir_slide($tempo: 1s, $delay: 1s){
+                @keyframes sugir_slide {
+                    100%{
+                        top: 0;
+                        filter: opacity(1);
+                    }
+                }
+                &{
+                    animation: sugir_slide $tempo forwards;
+                    animation-delay: $delay;
+                }
+            }
+
+            @for $i from 0 through 4 {
+                &:nth-child(#{$i}) {
+                  @include sugir_slide(0.5s, $i * 0.2s);
+                }
+            }
+        }
     }
 }
