@@ -26,10 +26,11 @@
         .sigle-habilidades{
             width: calc((100% / 4) - 20px);
             max-width: 200px;
-            background-color: var(--cor-header);
+            background-color: var(--cor-banner);
             backdrop-filter: blur(10px);
             border-radius: 10px;
             padding: 20px 0;
+            transition: all 0.5s !important;
             cursor: pointer;
             
 
@@ -54,7 +55,6 @@
             }
 
             &:hover{
-                filter: brightness(0.8);
                 box-shadow: 0px 0px 20px 0px var(--cor-secun);
             }
 

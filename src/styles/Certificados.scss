@@ -46,18 +46,19 @@
         .sigle-certificado{
             width: calc((100% / 4) - 10px);
             max-width: 380px;
-            background-color: var(--cor-header);
+            background-color: var(--cor-banner);
             backdrop-filter: blur(10px);
             border-radius: 10px;
             overflow: hidden;
             padding-bottom: 20px;
             margin-bottom: 10px;
+            box-shadow: 0px 0px 5px 0px var(--cor-shadow-banner);
 
             @media screen and (max-width: 1100px) {
                 width: calc((100% / 3) - 10px);
             }
 
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 830px) {
                 padding-bottom: 0;
                 width: calc((100% / 3) - 10px);
                 cursor: pointer;
@@ -80,7 +81,7 @@
             .img{
                 width: 100%;
                 aspect-ratio: 1/0.7;
-                background-color: rgba(255, 60, 00, 0.100);
+                //background-color: rgba(255, 60, 00, 0.100);
                 position: relative;
                 margin: 0 auto;
                 display: flex;

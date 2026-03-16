@@ -1,12 +1,12 @@
 .MenuLateral{
     position: fixed;
     top: 0;
-    right: 0;
+    //right: 0;
     height: 100%;
     width: 50px;
     //background-color: rgba(173, 91, 91, 0.4);
     color: #fff;
-    z-index: 999;
+    z-index: 997;
 
     @media screen and (max-width: 768px) {
         display: none;
