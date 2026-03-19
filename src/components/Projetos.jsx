@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import '../styles/Projetos.scss';
 
-import ImgProjetoTeste from '../img/ImgFrontEnd2.png';
+import ImgProjetoTeste from '../img/pro-metas.png';
+import ImgProNivelameto from '../img/pro-nivelamento.png';
 
 export default function Projetos() {
   const containerRef = useRef(null);
@@ -101,7 +102,37 @@ export default function Projetos() {
           img: ImgProjetoTeste,
           titulo: 'Projeto Teste',
           recursos: ['JS', 'HTML', 'CSS', 'React', 'Sass', 'Figma'] 
-     }
+     },
+               {
+          img: ImgProjetoTeste,
+          titulo: 'Projeto Teste',
+          recursos: ['js', 'html'] 
+     },
+               {
+          img: ImgProjetoTeste,
+          titulo: 'Projeto Teste',
+          recursos: ['js', 'html'] 
+     },
+               {
+          img: ImgProjetoTeste,
+          titulo: 'Projeto Teste',
+          recursos: ['js', 'html'] 
+     },
+               {
+          img: ImgProjetoTeste,
+          titulo: 'Projeto Teste',
+          recursos: ['js', 'html'] 
+     },
+               {
+          img: ImgProNivelameto,
+          titulo: 'Projeto Nivelamento',
+          recursos: ['js', 'html'] 
+     },
+               {
+          img: ImgProjetoTeste,
+          titulo: 'Projeto Teste',
+          recursos: ['JS', 'HTML', 'CSS', 'React', 'Sass', 'Figma'] 
+               }
   ]
 
   return (
@@ -118,14 +149,14 @@ export default function Projetos() {
         onPointerCancel={handlePointerUp}
         style={{ cursor: 'grab', touchAction: 'pan-y' }}
       >
-        <div className="auxlixar" style={{minWidth: `calc(${projetos.length} * 300px)`}}>
+        <div className="auxlixar" style={{minWidth: `calc(${projetos.length} * 320px)`}}>
           
           {projetos.map((elemento, index)=>{
                return(
                     <div key={index} className="sigle-projetos">
-                      <div className="img">
-                        <img src={elemento.img} alt={elemento.titulo} />
-                      </div>
+                      <div className="img"
+                        style={{ backgroundImage: `url(${elemento.img})` }} 
+                      ></div>
 
                       <div className="info">
                         <h2>{elemento.titulo}</h2>
@@ -137,6 +168,10 @@ export default function Projetos() {
                             )
                           })}
                         </div>
+
+                        {/* <div className="btn">
+                          <button>Ver Projeto</button>
+                        </div> */}
                       </div>
                     </div>
                )
