@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 import '../styles/Projetos.scss';
 
-import ImgProjetoTeste from '../img/pro-metas.png';
 import ImgProMetas from '../img/pro-metas.png';
 import ImgProNivelameto from '../img/pro-nivelamento.png';
 import ImgProGeoPortaL from '../img/pro-geoportal.png';
 import ImgProCrossRoad from '../img/pro-crossroad.png';
 import ImgProProtejaTerra from '../img/pro-protejaterra.png';
+import { BsArrowRight } from "react-icons/bs";
 
 export default function Projetos() {
   const containerRef = useRef(null);
@@ -78,13 +78,13 @@ export default function Projetos() {
       img: ImgProProtejaTerra,
       titulo: 'Protect the Earth',
       link: 'https://erick-s-vilhena.github.io/Protect-the-Earth/',
-      recursos: ['js', 'html']
+      recursos: ['JS', 'HTML', 'CSS']
     },
     {
       img: ImgProCrossRoad,
       titulo: 'Cross the Chicken',
       link: 'https://erick-s-vilhena.github.io/cross-the-chicken/',
-      recursos: ['js', 'html']
+      recursos: ['JS', 'HTML', 'CSS']
     },
     {
       img: ImgProGeoPortaL,
@@ -147,7 +147,7 @@ export default function Projetos() {
                       abrirProjeto(elemento.link);
                     }}
                   >
-                    Ver Projeto
+                    Acessar projeto <BsArrowRight />
                   </button>
                 </div>
               </div>
