@@ -6,6 +6,14 @@ import ImgProNivelameto from '../img/pro-nivelamento.png';
 import ImgProGeoPortaL from '../img/pro-geoportal.png';
 import ImgProCrossRoad from '../img/pro-crossroad.png';
 import ImgProProtejaTerra from '../img/pro-protejaterra.png';
+import ImgProLand1 from '../img/pro-land-1.png';
+import ImgProLand2 from '../img/pro-land-2.png';
+import ImgProLand3 from '../img/pro-land-3.png';
+import ImgProLand4 from '../img/pro-land-4.png';
+import ImgProLand5 from '../img/pro-land-5.png';
+import ImgProLand10 from '../img/pro-land-10.png';
+import ImgProLand11 from '../img/pro-land-11.png';
+import ImgProLandStar from '../img/pro-land-star.png';
 import { BsArrowRight } from "react-icons/bs";
 
 export default function Projetos() {
@@ -74,7 +82,56 @@ export default function Projetos() {
   };
 
   const projetos = [
-      {
+    {
+      img: ImgProLand1,
+      titulo: 'Landing Page 1',
+      link: 'https://erick-s-vilhena.github.io/galeria/',
+      recursos: ['HTML', 'CSS']
+    },
+    {
+      img: ImgProLand2,
+      titulo: 'Landing Page 2',
+      link: 'https://erick-s-vilhena.github.io/2-Landing-Page/',
+      recursos: ['HTML', 'CSS']
+    },
+    {
+      img: ImgProLandStar,
+      titulo: 'Landing Page Star',
+      link: 'https://erick-s-vilhena.github.io/galeria/starbucks/',
+      recursos: ['HTML', 'CSS']
+    },
+    {
+      img: ImgProLand11,
+      titulo: 'Landing Page 11',
+      link: 'https://erick-s-vilhena.github.io/galeria/projeto_11/',
+      recursos: ['HTML', 'CSS']
+    },
+    {
+      img: ImgProLand10,
+      titulo: 'Landing Page 10',
+      link: 'https://erick-s-vilhena.github.io/galeria/projeto_10/',
+      recursos: ['HTML', 'CSS']
+    },
+    {
+      img: ImgProLand3,
+      titulo: 'Landing Page 3',
+      link: 'https://erick-s-vilhena.github.io/3-Landing-Page/',
+      recursos: ['JS', 'HTML', 'CSS']
+    },
+    {
+      img: ImgProLand4,
+      titulo: 'Landing Page 4',
+      link: 'https://erick-s-vilhena.github.io/galeria/projeto_04/',
+      recursos: ['JS', 'HTML', 'CSS']
+    },
+
+    {
+      img: ImgProLand5,
+      titulo: 'Landing Page 5',
+      link: 'https://erick-s-vilhena.github.io/galeria/projeto_05/',
+      recursos: ['JS', 'HTML', 'CSS']
+    },
+    {
       img: ImgProProtejaTerra,
       titulo: 'Protect the Earth',
       link: 'https://erick-s-vilhena.github.io/Protect-the-Earth/',
