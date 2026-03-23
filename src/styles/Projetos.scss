@@ -23,7 +23,16 @@
         @media screen and (max-width: 768px) {
         padding-left: 0px;
         }
+
+        p{
+            color: var(--cor-texto);
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: normal;
+        }
     }
+
+
 
     .container{
         width: 100%;
@@ -74,67 +83,23 @@
 
             .sigle-projetos{
                 width: 300px;
-                height: 360px;
+                height: 480px;
                 background-color: var(--cor-banner);
                 //box-shadow: 0px 0px 5px 0px var(--cor-shadow-banner);
                 backdrop-filter: blur(20px);
                 border-radius: 10px;
                 overflow: hidden;
-                transition: all 0.3s ease !important;
+                transition: all 0.2s ease !important;
                 flex-shrink: 0;
                 user-select: inherit !important;
                 z-index: 5 !important;
 
-                @for $i from 1 through 30{
-
-                        @if $i % 2 == 0{
-                            &:nth-child(#{$i}){
-                                justify-content: end;
-                                //background-color: rgba(85, 255, 0, 0.167);
-
-                                .decoracao.bot{
-                                    display: none;
-                                }
-                            }
-                        }
-                        @else{
-                            &:nth-child(#{$i}){
-                                justify-content: start;
-                                //background-color: rgba(212, 255, 0, 0.167);
-                                .decoracao.sup{
-                                    display: none;
-                                }
-                            }
-                        }
-
-                        &:nth-child(#{$i}){
-
-                            .bola{
-                                animation-delay: 1s * $i !important;
-                            }
-
-                        }
-
-                        &:nth-child(1){
-                            //background-color: red;
-
-                            .plug-anterior{
-                                display: none;
-                            }
-
-                            .aux{
-                                display: none !important;
-                            }
-                            
-                        }
-                    }
-
                 &:hover{
-                    height: 360px;
+                    margin-top: -20px;
                 }
 
                 &:active{
-                    height: 360px;
+                    margin-top: -20px;
                 }
                 .img{
                     user-select: none;
@@ -155,26 +120,31 @@
                         color: var(--cor-titulo);
                         font-weight: normal;
                         font-size: 20px;
-                        margin-bottom: 20px;
+                        margin-bottom: 10px;
                     }
 
                     .habilidades{
                         display: flex;
-                        gap: 10px;
+                        gap: 5px;
                         flex-wrap: wrap;
                         padding-bottom: 0px;
                         justify-content: left;
+                        min-height: 54px;
+                        margin: 10px 0;
+                        //background-color: rgba(255, 60, 00, 0.100);
 
                         .hab{
-                            padding: 2px 10px;
+                            padding: 0px 16px;
+                            height: 24px;
                             min-width: 40px;
                             display: flex;
-                            justify-content: center;
                             align-items: center;
                             border-radius: 20px;
                             font-size: 12px;
                             font-weight: bold;
                             color: #fff;
+                            line-height: 0;
+                            
 
                             &.JS{ background-color: var(--js); }
 
@@ -191,6 +161,13 @@
                             &.Figma{ background-color: var(--fg); }
 
                             &.Node{ background-color: var(--node); }
+
+                            &.Tailwind{ background-color: var(--tw); }
+
+                            p{
+                                color: #fff;
+                                padding: 0;
+                            }
                         }
                     }
 
@@ -210,8 +187,8 @@
                             gap: 10px;
                            
                             padding: 10px 20px;
-                            background-color: var(--cor-secun);
-                            color: var(--cor-titulo);
+                            background-color: #7F5AF0;
+                            color: #fff;
                             border: none;
                             border-radius: 5px;
                             cursor: pointer;
@@ -225,6 +202,12 @@
                                 font-size: 18px;
                             }
                         }
+                    }
+
+                    p{
+                        color: var(--cor-texto);
+                        text-align: justify;
+                        padding-bottom: 20px;
                     }
                 }
             }

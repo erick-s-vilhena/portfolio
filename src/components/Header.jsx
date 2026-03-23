@@ -33,9 +33,9 @@ export default function Header(){
         <div className="center">
           <Logo/>
 
-          <Menu btnMenu={btnMenu}/>
+          {/* <Menu btnMenu={btnMenu}/>
 
-          <Btn_Menu btnMenu={btnMenu} setBtnMenu={setBtnMenu}/>
+          <Btn_Menu btnMenu={btnMenu} setBtnMenu={setBtnMenu}/> */}
         </div>
     </div>
   )

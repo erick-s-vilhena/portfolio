@@ -9,6 +9,8 @@ import HabilidadeOpen from './components/HabilidadeOpen'
 import { useContexto } from './context/Contexto'
 import Projetos from './components/Projetos'
 import MenuLateral from './components/MenuLateral'
+import SnakeGame from './components/SnakeGame'
+import Contatos from './components/Contatos'
 
 function App() {
 
@@ -55,6 +57,8 @@ function App() {
         <Projetos/>
 
         <MenuLateral/>
+
+        <Contatos/>
     </div>
   )
 }
