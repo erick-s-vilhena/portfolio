@@ -46,13 +46,11 @@ function App() {
             <HabilidadeOpen/>
           )
         }
-        <Luz_bg/>
 
-        <Header/>
+        <div className='main'>
+          <Luz_bg/>
 
-        <Inicio/>
-        
-        <Sobre/>
+          <Header/>
 
         <Projetos/>
 
