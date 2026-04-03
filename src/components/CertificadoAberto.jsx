@@ -9,7 +9,7 @@ export default function CertificadoAberto(){
     const { certificadoAberto, setCertificadoAberto, codigo, setCodigo } = useContexto();
 
     return (
-        <div className="CertificadoAberto">
+        <div className="CertificadoAberto ">
             <div className="sigle-aberto">
                 <div className="img">
                     <IoClose onClick={()=>[setCertificadoAberto(null)]}/>
@@ -19,12 +19,13 @@ export default function CertificadoAberto(){
 
                 
                 <div className="info">
-                    <p>Credencial: {certificadoAberto.codigo} <MdOutlineContentCopy
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation(); // 
-                                                                        setCodigo(certificadoAberto.codigo);
-                                                                        }} 
-                                                                    style={{color: codigo == certificadoAberto.codigo && '#37c02d'}}/></p>
+                    <p>Credencial: {certificadoAberto.codigo} 
+                        <MdOutlineContentCopy
+                            onClick={(e) => {
+                                e.stopPropagation(); // 
+                                setCodigo(certificadoAberto.codigo);
+                                }} 
+                            style={{color: codigo == certificadoAberto.codigo && '#37c02d'}}/></p>
 
                     <a href='https://cursos.dankicode.com/validate-certificate' target="_blank">Verificar credencial <RiExternalLinkLine /></a>
                 </div>

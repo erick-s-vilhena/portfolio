@@ -47,11 +47,18 @@ export default function Inicio(){
                       <RiLinkedinFill/>
                   </a>
                   
-                  <a href='./'><RiGithubFill/></a>
+                  <a href='https://github.com/erick-s-vilhena' 
+                      target='_blank'
+                      rel="noopener noreferrer"><RiGithubFill/>
+                  </a>
 
-                  <a href='./'><CgMail/></a>
+                  <a href='mailto:erick.s.vilhena@gmail.com' 
+                      target='_blank'
+                      rel="noopener noreferrer"><CgMail/></a>
 
-                  <a href='./'><TbFileCv/></a>
+                  <a href='https://drive.google.com/file/d/1DL-zjk_awGWAzrbJPufkkp4gFuxPGZOQ/view?usp=sharing' 
+                      target='_blank'
+                      rel="noopener noreferrer"><TbFileCv/></a>
                   
                   <div className='line'>
                       <div className='line_roxa'></div>

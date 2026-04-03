@@ -4,11 +4,16 @@
     flex-direction: column;
     flex-shrink: 1;
     padding-top: 80px;
+    padding-right: 50px;
     z-index: 10;
     align-items: center;
     position: relative;
-    margin-bottom: 50px;
-    background-color: rgba(0, 255, 255, 0.100);
+    //background-color: rgba(0, 255, 255, 0.100);
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        padding-right: 0;
+    }
 
     @media screen and (max-width: 968px) {
         height: auto;
@@ -20,6 +25,11 @@
         font-size: clamp(26px, 4vw, 42px);
         color: var(--cor-titulo);
         margin-bottom: 30px;
+        padding-left: 50px;
+
+        @media screen and (max-width: 768px) {
+            padding-left: 0px;
+        }
     }
 
     .menu-sobre{
@@ -27,7 +37,11 @@
         display: flex;
         justify-content: center;
         flex-shrink: 0;
-        background-color: rgba(255, 60, 00, 0.100);
+        padding-left: 50px;
+
+        @media screen and (max-width: 768px) {
+            padding-left: 0;
+        }
 
         nav{
             width: 100%;
@@ -96,6 +110,7 @@
             width: calc(100% * 3);
             display: flex;
             transition: all 1s;
+            gap: 2px;
             //transform: translateX(calc((-100% / 3)));
 
             .slide{

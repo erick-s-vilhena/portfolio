@@ -1,38 +1,215 @@
 .Projetos{
-    width: 100%;
-    background-color: rgba(255, 60, 00, 0.100);
+    position: relative;
+    width: calc(100% + 20px);
+    margin-bottom: 100px;
+    z-index: 2;
+    padding-right: 50px;
 
-    h1{
-        font-size: 2.5rem;
-        color: #fff;
-        text-align: center;
-        padding: 2rem 0;
+    //background-color: red;
+
+    @media screen and (max-width: 768px) {
+        width: calc(100% + 40px);
+        padding-right: 00px;
+        margin-right: -20px;
     }
 
-    .contianer_projetos{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 2rem 0 4rem 0;
-        overflow: hidden;
-        background-color: rgba(255, 60, 00, 0.100);
+    h1{
+        text-align: center;
+        font-size: clamp(26px, 4vw, 42px);
+        color: var(--cor-titulo);
+        padding: 80px 0;
+        padding-left: 50px;
 
-        .aux_projetos{
-            width: 100%;
+        @media screen and (max-width: 768px) {
+        padding-left: 0px;
+        }
+
+        p{
+            color: var(--cor-texto);
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: normal;
+        }
+    }
+
+
+
+    .container{
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        user-select: none;
+        -webkit-user-select: none;
+        scrollbar-width: thin;
+        
+
+        &::-webkit-scrollbar {
+        height: 8px; /* horizontal */
+        width: 8px;  /* vertical */
+        }
+
+        &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 999px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+        background: var(--cor-secun);
+        border-radius: 999px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+        background: var(--cor-secun);
+        }
+
+        & {
+        scrollbar-width: thin;
+        scrollbar-color: var(--cor-secun) transparent;
+        }
+                
+
+        .auxlixar{
             display: flex;
             justify-content: right;
-            gap: 20px;
             align-items: center;
-            background-color: rgba(255, 60, 00, 0.100);
+            gap: 20px;
+            padding: 10px 0;
 
-            .projeto{
+
+            @media screen and (max-width: 768px) {
+                padding-right: 20px;
+            }
+            
+
+            .sigle-projetos{
                 width: 300px;
-                min-width: 300px;
-                height: 200px;
-                overflow: hidden;
-                background-color: rgba(255, 60, 00, 0.100);
+                height: 480px;
+                background-color: var(--cor-banner);
+                //box-shadow: 0px 0px 5px 0px var(--cor-shadow-banner);
+                backdrop-filter: blur(20px);
                 border-radius: 10px;
+                overflow: hidden;
+                transition: all 0.2s ease !important;
+                flex-shrink: 0;
+                user-select: inherit !important;
+                z-index: 5 !important;
+
+                &:hover{
+                    margin-top: -20px;
+                }
+
+                &:active{
+                    margin-top: -20px;
+                }
+                .img{
+                    user-select: none;
+                    width: 100%;
+                    height: 180px;
+                    object-fit: cover;
+                    overflow: hidden;
+                    background-position:top;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                }
+
+                .info{
+                    padding: 10px 20px;
+                    user-select: none;
+
+                    h2{
+                        color: var(--cor-titulo);
+                        font-weight: normal;
+                        font-size: 20px;
+                        margin-bottom: 10px;
+                    }
+
+                    .habilidades{
+                        display: flex;
+                        gap: 5px;
+                        flex-wrap: wrap;
+                        padding-bottom: 0px;
+                        justify-content: left;
+                        min-height: 54px;
+                        margin: 10px 0;
+                        //background-color: rgba(255, 60, 00, 0.100);
+
+                        .hab{
+                            padding: 0px 16px;
+                            height: 24px;
+                            min-width: 40px;
+                            display: flex;
+                            align-items: center;
+                            border-radius: 20px;
+                            font-size: 12px;
+                            font-weight: bold;
+                            color: #fff;
+                            line-height: 0;
+                            
+
+                            &.JS{ background-color: var(--js); }
+
+                            &.HTML{ background-color: var(--html); }
+
+                            &.CSS{ background-color: var(--css); }
+
+                            &.React{ background-color: var(--react); }
+
+                            &.Firebase{ background-color: var(--fb); }
+
+                            &.Sass{ background-color: var(--sass); }
+
+                            &.Figma{ background-color: var(--fg); }
+
+                            &.Node{ background-color: var(--node); }
+
+                            &.Tailwind{ background-color: var(--tw); }
+
+                            p{
+                                color: #fff;
+                                padding: 0;
+                            }
+                        }
+                    }
+
+                    .btn{
+                        position: absolute;
+                        bottom: 10px;
+                        margin-top: 20px;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        left: 0;
+
+                        button{
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                           
+                            padding: 10px 20px;
+                            background-color: #7F5AF0;
+                            color: #fff;
+                            border: none;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            transition: background-color 0.2s ease;
+
+                            &:hover{
+                                filter: brightness(80%);
+                            }
+
+                            svg{
+                                font-size: 18px;
+                            }
+                        }
+                    }
+
+                    p{
+                        color: var(--cor-texto);
+                        text-align: justify;
+                        padding-bottom: 20px;
+                    }
+                }
             }
         }
     }

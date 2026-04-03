@@ -7,6 +7,7 @@ import Sass from '../img/sass.png';
 import Figma from '../img/figma.png';
 import Node from '../img/node.png';
 import Firebase from '../img/firebase.png';
+import Tailwind from '../img/tailwind.png';
 import { useContexto } from '../context/Contexto';
 
 export default function Habilidades({ativo}){
@@ -43,6 +44,11 @@ const infoHablidades = [
         habilidade: 'Sass',
         logo: Sass,
         descricao: "Sass é uma extensão do CSS que adiciona recursos como variáveis, funções, aninhamento de regras e reutilização de código. Ele facilita a organização e manutenção de estilos em projetos grandes, gerando um CSS mais limpo e eficiente."
+    },
+    {
+        habilidade: 'Tailwind',
+        logo: Tailwind,
+        descricao: "Tailwind é um framework CSS que oferece uma abordagem utilitária para estilizar páginas web. Ele fornece classes pré-definidas para aplicar estilos diretamente no HTML, permitindo criar designs personalizados de forma rápida e eficiente, sem a necessidade de escrever CSS personalizado."
     },
     {
         habilidade: 'Figma',

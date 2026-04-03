@@ -16,6 +16,9 @@
             font-weight: 500;
             height: 30px;
             cursor: pointer;
+            padding: 0!important;
+            flex-shrink: 0;
+            
 
             &:hover{
                 color: var(--cor-prima);
