@@ -1,15 +1,15 @@
 .Habilidades{
     height: 100%;
     padding-top: 40px;
-    background-color: rgba(255, 60, 00, 0.100);
 
     &.true{
         height: 600px;
         overflow: hidden;
     }
 
+
     .container-habilidades{
-        width: calc(100% - 100px);
+        width: 100%;
         max-width: 1000px;
         margin: 0 auto;
         display: flex;
@@ -17,19 +17,13 @@
         gap: 20px;
         justify-content: center;
         overflow: hidden;
-        padding: 20px 0;
-        background-color: rgba(255, 60, 00, 0.100);
-
+        padding: 20px;
         @media screen and (max-width: 786px) {
             gap: 10px;
         }
         
         @media screen and (max-width: 7680px) {
             padding: 0;
-        }
-
-        @media screen and (max-width: 900px) {
-          width: 100%;
         }
 
 

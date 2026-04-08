@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import "../styles/SnakeGame.scss";
 
-const COLS = window.innerWidth > 1330 ? 40 : 30 ;
-const ROWS = window.innerWidth > 768 ? 30 : 30;
+const COLS = window.innerWidth > 1330 ? 40 : 30;
+const ROWS = 30;
 const INITIAL_SPEED = 120;
 
 const createInitialSnake = () => [
@@ -32,7 +33,7 @@ export default function SnakeGame() {
   const [nextDirection, setNextDirection] = useState({ x: 1, y: 0 });
   const [apple, setApple] = useState({ x: 20, y: 20 });
   const [score, setScore] = useState(0);
-  const [gameStatus, setGameStatus] = useState("start"); // start | playing | gameover
+  const [gameStatus, setGameStatus] = useState("start");
   const [cellSize, setCellSize] = useState(16);
 
   const moveLockedRef = useRef(false);
@@ -118,7 +119,6 @@ export default function SnakeGame() {
         setDirection(appliedDirection);
         moveLockedRef.current = false;
 
-        // Bateu na parede
         if (
           newHead.x < 0 ||
           newHead.x >= COLS ||
@@ -135,7 +135,6 @@ export default function SnakeGame() {
           ? currentSnake
           : currentSnake.slice(0, currentSnake.length - 1);
 
-        // Bateu no próprio corpo
         if (
           bodyToCheck.some(
             (segment) => segment.x === newHead.x && segment.y === newHead.y
@@ -169,18 +168,13 @@ export default function SnakeGame() {
       return (
         <div
           key={`${segment.x}-${segment.y}-${index}`}
+          className={`snake-game__segment ${isHead ? "is-head" : ""}`}
           style={{
-            position: "absolute",
             left: segment.x * cellSize,
             top: segment.y * cellSize,
             width: cellSize,
             height: cellSize,
-            background: "#7F5AF0",
             borderRadius: isHead ? Math.max(4, cellSize * 0.3) : Math.max(2, cellSize * 0.22),
-            boxShadow: isHead
-              ? "0 0 0 2px rgba(255,255,255,0.08) inset"
-              : "0 0 0 1px rgba(255,255,255,0.05) inset",
-            zIndex: 2,
           }}
         />
       );
@@ -188,16 +182,15 @@ export default function SnakeGame() {
   }, [snake, cellSize]);
 
   return (
-    <div style={styles.page}>
+    <div className="snake-game">
+      <div className="snake-game__wrapper">
+        <h1 className="snake-game__title">Jogo da Cobrinha</h1>
 
-      <div style={styles.wrapper}>
-        <h1 style={styles.title}>Jogo da Cobrinha</h1>
-
-        <div style={styles.scoreBox}>Pontos: {score}</div>
+        <div className="snake-game__score">Pontos: {score}</div>
 
         <div
+          className="snake-game__board"
           style={{
-            ...styles.board,
             width: boardWidth,
             height: boardHeight,
             backgroundSize: `${cellSize}px ${cellSize}px`,
@@ -207,31 +200,27 @@ export default function SnakeGame() {
             `,
           }}
         >
-          
-
           <div
+            className="snake-game__apple"
             style={{
-              position: "absolute",
               left: apple.x * cellSize,
               top: apple.y * cellSize,
               width: cellSize,
               height: cellSize,
-              background: "#ff3b30",
               borderRadius: Math.max(2, cellSize * 0.2),
-              zIndex: 2,
             }}
           />
 
           {snakeBody}
 
           {gameStatus === "start" && (
-            <div style={styles.overlay}>
-              <div style={styles.menuSnake}>
-                <h2 style={styles.menuTitle}>Bem-vindo</h2>
-                <p style={styles.menuText}>
+            <div className="snake-game__overlay">
+              <div className="snake-game__menu">
+                <h2 className="snake-game__menu-title">Bem-vindo</h2>
+                <p className="snake-game__menu-text">
                   Use as setas do teclado ou WASD para mover a cobrinha.
                 </p>
-                <button style={styles.button} onClick={resetGame}>
+                <button className="snake-game__button" onClick={resetGame}>
                   Iniciar jogo
                 </button>
               </div>
@@ -239,11 +228,11 @@ export default function SnakeGame() {
           )}
 
           {gameStatus === "gameover" && (
-            <div style={styles.overlay}>
-              <div style={styles.menuSnake}>
-                <h2 style={styles.menuTitle}>Você perdeu</h2>
-                <p style={styles.menuText}>Pontuação final: {score}</p>
-                <button style={styles.button} onClick={resetGame}>
+            <div className="snake-game__overlay">
+              <div className="snake-game__menu">
+                <h2 className="snake-game__menu-title">Você perdeu</h2>
+                <p className="snake-game__menu-text">Pontuação final: {score}</p>
+                <button className="snake-game__button" onClick={resetGame}>
                   Jogar novamente
                 </button>
               </div>
@@ -251,97 +240,8 @@ export default function SnakeGame() {
           )}
         </div>
 
-        <p style={styles.help}>
-          Controles: ↑ ↓ ← → ou W A S D
-        </p>
+        <p className="snake-game__help">Controles: ↑ ↓ ← → ou W A S D</p>
       </div>
     </div>
   );
 }
-
-const styles = {
-  page: {
-    backgroundColor: "var(--cor-fundo)",
-    display: "flex",
-    alignItems: "center",
-    padding: 16,
-  },
-  wrapper: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 14,
-  },
-  title: {
-    margin: 0,
-    fontSize: "clamp(24px, 4vw, 36px)",
-    fontWeight: 800,
-    color: "var(--cor-titulo)",
-  },
-  board: {
-    position: "relative",
-    backgroundColor: "#16161f",
-    border: "2px solid rgba(127, 90, 240, 0.45)",
-    borderRadius: 18,
-    overflow: "hidden",
-    boxShadow: "0 20px 60px rgba(0,0,0,0.35)",
-  },
-  scoreBox: {
-    zIndex: 5,
-    padding: "8px 12px",
-    borderRadius: 10,
-    background: "rgba(15, 14, 23, 0.78)",
-    border: "1px solid rgba(255,255,255,0.08)",
-    color: "#fffffe",
-    fontWeight: 700,
-    fontSize: 14,
-    backdropFilter: "blur(6px)",
-  },
-  overlay: {
-    position: "absolute",
-    inset: 0,
-    zIndex: 10,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "rgba(15, 14, 23, 0.72)",
-    padding: 20,
-  },
-  menuSnake: {
-    width: "min(92%, 360px)",
-    background: "#1b1a27",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderRadius: 18,
-    padding: 24,
-    textAlign: "center",
-    boxShadow: "0 18px 40px rgba(0,0,0,0.35)",
-  },
-  menuTitle: {
-    margin: "0 0 10px",
-    fontSize: 28,
-    fontWeight: 800,
-    color: "#fffffe",
-  },
-  menuText: {
-    margin: "0 0 10px",
-    color: "rgba(255,255,255,0.82)",
-    lineHeight: 1.5,
-  },
-  button: {
-    marginTop: 10,
-    width: "100%",
-    padding: "12px 16px",
-    borderRadius: 12,
-    background: "#7F5AF0",
-    color: "#fffffe",
-    fontWeight: 800,
-    fontSize: 16,
-    transition: "transform 0.15s ease, opacity 0.15s ease",
-  },
-  help: {
-    margin: 0,
-    color: "var(--cor-titulo)",
-    fontSize: 14,
-  },
-};

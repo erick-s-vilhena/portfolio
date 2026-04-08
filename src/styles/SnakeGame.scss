@@ -1,0 +1,115 @@
+.snake-game {
+  background-color: var(--cor-fundo);
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  //background-color: rgba(255, 60, 00, 0.100);
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+
+  }
+
+  &__title {
+    margin: 0;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    color: var(--cor-titulo);
+  }
+
+  &__board {
+    position: relative;
+    background-color: #16161f;
+    border: 2px solid rgba(127, 90, 240, 0.45);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  }
+
+  &__score {
+    z-index: 5;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(15, 14, 23, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #fffffe;
+    font-weight: 700;
+    font-size: 14px;
+    backdrop-filter: blur(6px);
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 14, 23, 0.72);
+    padding: 20px;
+  }
+
+  &__menu {
+    width: min(92%, 360px);
+    background: #1b1a27;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  &__menu-title {
+    margin: 0 0 10px;
+    font-size: 28px;
+    font-weight: 800;
+    color: #fffffe;
+  }
+
+  &__menu-text {
+    margin: 0 0 10px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.5;
+  }
+
+  &__button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #7f5af0;
+    color: #fffffe;
+    font-weight: 800;
+    font-size: 16px;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  &__help {
+    margin: 0;
+    color: var(--cor-titulo);
+    font-size: 14px;
+  }
+
+  &__apple {
+    position: absolute;
+    background: #ff3b30;
+    z-index: 2;
+  }
+
+  &__segment {
+    position: absolute;
+    background: #7f5af0;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    z-index: 2;
+
+    &.is-head {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08) inset;
+    }
+  }
+}

@@ -15,15 +15,9 @@
         margin: 0 auto;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
-        padding: 50px 50px 0 50px;
-
-        gap: 10px;;
+        padding-top: 50px;
+        gap: 10px;
         //background-color: rgba(255, 60, 00, 0.100);
-
-        @media screen and (max-width: 900px) {
-            padding: 50px 0px 0 0px;
-        }
 
         @media screen and (max-width: 640px) {
             justify-content: center;
