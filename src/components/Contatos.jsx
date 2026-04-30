@@ -7,8 +7,8 @@ import { TbFileCv } from 'react-icons/tb'
 
 export default function Contatos(){
    return (
-       <div className='Contatos' id='contatos'>
-            <h1>Entre em contato</h1>
+       <div className='Contatos'>
+            <h1>Contatos</h1>
 
             <div className='contatos-container'>
                 <div className='icons_contato'>

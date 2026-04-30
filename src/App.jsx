@@ -23,6 +23,10 @@ function Layout() {
   const navigate = useNavigate();
   const outlet = useOutlet();
   const wheelLockRef = useRef(false);
+  const touchStartYRef = useRef(null);
+  const touchStartXRef = useRef(null);
+  const touchStartScrollTopRef = useRef(0);
+  const touchStartMaxScrollTopRef = useRef(0);
   const transitionTimeoutRef = useRef();
   const currentPaneRef = useRef(null);
   const [currentView, setCurrentView] = useState({
@@ -89,18 +93,15 @@ function Layout() {
   }, [currentView.pathname, isTransitioning]);
 
   useEffect(() => {
-    function handleWheel(event) {
-      if (certificadoAberto || habilidadeOpen) return;
-      if (wheelLockRef.current) return;
-      if (Math.abs(event.deltaY) < 35) return;
+    function navigateByDirection(direction) {
+      if (certificadoAberto || habilidadeOpen) return false;
+      if (wheelLockRef.current) return false;
 
       const currentIndex = ROUTES_ORDER.indexOf(location.pathname);
-      if (currentIndex === -1) return;
+      if (currentIndex === -1) return false;
 
-      const direction = event.deltaY > 0 ? 1 : -1;
       const nextIndex = currentIndex + direction;
-
-      if (nextIndex < 0 || nextIndex >= ROUTES_ORDER.length) return;
+      if (nextIndex < 0 || nextIndex >= ROUTES_ORDER.length) return false;
 
       const scrollTop = window.scrollY;
       const maxScrollTop =
@@ -108,22 +109,75 @@ function Layout() {
       const atTop = scrollTop <= 4;
       const atBottom = maxScrollTop - scrollTop <= 4;
 
-      if (direction > 0 && !atBottom) return;
-      if (direction < 0 && !atTop) return;
+      if (direction > 0 && !atBottom) return false;
+      if (direction < 0 && !atTop) return false;
 
-      event.preventDefault();
       wheelLockRef.current = true;
       navigate(ROUTES_ORDER[nextIndex]);
 
       window.setTimeout(() => {
         wheelLockRef.current = false;
       }, ROUTE_SCROLL_LOCK_MS);
+
+      return true;
+    }
+
+    function handleWheel(event) {
+      if (Math.abs(event.deltaY) < 35) return;
+
+      const direction = event.deltaY > 0 ? 1 : -1;
+      const moved = navigateByDirection(direction);
+
+      if (moved) {
+        event.preventDefault();
+      }
+    }
+
+    function handleTouchStart(event) {
+      const touch = event.touches[0];
+      if (!touch) return;
+
+      touchStartYRef.current = touch.clientY;
+      touchStartXRef.current = touch.clientX;
+      touchStartScrollTopRef.current = window.scrollY;
+      touchStartMaxScrollTopRef.current =
+        document.documentElement.scrollHeight - window.innerHeight;
+    }
+
+    function handleTouchEnd(event) {
+      if (touchStartYRef.current === null || touchStartXRef.current === null) return;
+
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+
+      const deltaY = touchStartYRef.current - touch.clientY;
+      const deltaX = touchStartXRef.current - touch.clientX;
+
+      touchStartYRef.current = null;
+      touchStartXRef.current = null;
+
+      if (Math.abs(deltaY) < 60) return;
+      if (Math.abs(deltaX) > Math.abs(deltaY)) return;
+
+      const direction = deltaY > 0 ? 1 : -1;
+      const startedAtTop = touchStartScrollTopRef.current <= 4;
+      const startedAtBottom =
+        touchStartMaxScrollTopRef.current - touchStartScrollTopRef.current <= 4;
+
+      if (direction > 0 && !startedAtBottom) return;
+      if (direction < 0 && !startedAtTop) return;
+
+      navigateByDirection(direction);
     }
 
     window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [certificadoAberto, habilidadeOpen, location.pathname, navigate]);
 

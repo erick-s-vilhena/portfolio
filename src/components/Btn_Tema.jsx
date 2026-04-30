@@ -6,6 +6,7 @@ export default function Btn_Tema(){
   const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
+      document.documentElement.setAttribute('data-theme', theme);
       document.body.setAttribute('data-theme', theme);
   }, [theme]);
 

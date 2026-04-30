@@ -1,5 +1,6 @@
 .Sobre{
     width: 100%;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     flex-shrink: 1;
@@ -14,11 +15,13 @@
     @media screen and (max-width: 768px) {
         width: 100%;
         padding-right: 0;
+        padding-top: 50px !important;
     }
 
     @media screen and (max-width: 968px) {
         min-height: calc(100vh - 40px);
-        padding-top: 20px;
+        padding: 0 20px;
+        padding-top: 12px;
     }
 
     h1{
@@ -30,6 +33,7 @@
 
         @media screen and (max-width: 768px) {
             padding-left: 0px;
+            margin-bottom: 18px;
         }
     }
 

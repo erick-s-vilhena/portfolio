@@ -27,33 +27,21 @@ const isOppositeDirection = (current, next) => {
   return current.x + next.x === 0 && current.y + next.y === 0;
 };
 
-const isTypingTarget = (target) => {
-  if (!(target instanceof HTMLElement)) return false;
-
-  const tagName = target.tagName.toLowerCase();
-  return (
-    tagName === "input" ||
-    tagName === "textarea" ||
-    tagName === "select" ||
-    target.isContentEditable
-  );
-};
-
 export default function SnakeGame() {
   const [snake, setSnake] = useState(createInitialSnake());
   const [direction, setDirection] = useState({ x: 1, y: 0 });
   const [nextDirection, setNextDirection] = useState({ x: 1, y: 0 });
   const [apple, setApple] = useState({ x: 20, y: 20 });
-  const [playerName, setPlayerName] = useState("");
   const [score, setScore] = useState(0);
-  const [gameStatus, setGameStatus] = useState("start");
+  const [gameStatus, setGameStatus] = useState("start"); // start | playing | gameover
   const [cellSize, setCellSize] = useState(16);
+  const [playerName, setPlayerName] = useState("");
 
   const moveLockedRef = useRef(false);
+  const canStartGame = playerName.trim().length > 0;
 
   const boardWidth = COLS * cellSize;
   const boardHeight = ROWS * cellSize;
-  const hasPlayerName = playerName.trim().length > 0;
 
   useEffect(() => {
     const updateCellSize = () => {
@@ -74,7 +62,7 @@ export default function SnakeGame() {
   }, []);
 
   const resetGame = () => {
-    if (!hasPlayerName) return;
+    if (!canStartGame) return;
 
     const initialSnake = createInitialSnake();
     setSnake(initialSnake);
@@ -88,12 +76,10 @@ export default function SnakeGame() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (isTypingTarget(e.target)) return;
-
       const key = e.key.toLowerCase();
 
       if (gameStatus !== "playing") {
-        if ((key === "enter" || key === " ") && hasPlayerName) {
+        if ((key === "enter" || key === " ") && canStartGame) {
           e.preventDefault();
           resetGame();
         }
@@ -120,31 +106,31 @@ export default function SnakeGame() {
 
     window.addEventListener("keydown", handleKeyDown, { passive: false });
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [direction, gameStatus, hasPlayerName]);
+  }, [canStartGame, direction, gameStatus]);
 
   useEffect(() => {
     if (gameStatus !== "playing") return;
 
     const interval = setInterval(() => {
-      const appliedDirection = nextDirection;
-      let nextApplePosition = null;
-      let nextGameStatus = null;
-      let shouldIncreaseScore = false;
-
       setSnake((currentSnake) => {
+        const appliedDirection = nextDirection;
         const head = currentSnake[0];
         const newHead = {
           x: head.x + appliedDirection.x,
           y: head.y + appliedDirection.y,
         };
 
+        setDirection(appliedDirection);
+        moveLockedRef.current = false;
+
+        // Bateu na parede
         if (
           newHead.x < 0 ||
           newHead.x >= COLS ||
           newHead.y < 0 ||
           newHead.y >= ROWS
         ) {
-          nextGameStatus = "gameover";
+          setGameStatus("gameover");
           return currentSnake;
         }
 
@@ -154,12 +140,13 @@ export default function SnakeGame() {
           ? currentSnake
           : currentSnake.slice(0, currentSnake.length - 1);
 
+        // Bateu no próprio corpo
         if (
           bodyToCheck.some(
             (segment) => segment.x === newHead.x && segment.y === newHead.y
           )
         ) {
-          nextGameStatus = "gameover";
+          setGameStatus("gameover");
           return currentSnake;
         }
 
@@ -167,29 +154,14 @@ export default function SnakeGame() {
 
         if (ateApple) {
           nextSnake = [newHead, ...currentSnake];
-          shouldIncreaseScore = true;
-          nextApplePosition = getRandomApple(nextSnake);
+          setScore((prev) => prev + 1);
+          setApple(getRandomApple(nextSnake));
         } else {
           nextSnake = [newHead, ...currentSnake.slice(0, -1)];
         }
 
         return nextSnake;
       });
-
-      setDirection(appliedDirection);
-      moveLockedRef.current = false;
-
-      if (nextGameStatus) {
-        setGameStatus(nextGameStatus);
-      }
-
-      if (shouldIncreaseScore) {
-        setScore((prev) => prev + 1);
-      }
-
-      if (nextApplePosition) {
-        setApple(nextApplePosition);
-      }
     }, INITIAL_SPEED);
 
     return () => clearInterval(interval);
@@ -202,13 +174,18 @@ export default function SnakeGame() {
       return (
         <div
           key={`${segment.x}-${segment.y}-${index}`}
-          className={`snake-game__segment ${isHead ? "is-head" : ""}`}
           style={{
+            position: "absolute",
             left: segment.x * cellSize,
             top: segment.y * cellSize,
             width: cellSize,
             height: cellSize,
+            background: isHead ? "var(--cor-prima)" : "var(--cor-secun)",
             borderRadius: isHead ? Math.max(4, cellSize * 0.3) : Math.max(2, cellSize * 0.22),
+            boxShadow: isHead
+              ? "0 0 0 2px color-mix(in srgb, var(--cor-a-bg) 12%, transparent) inset"
+              : "0 0 0 1px color-mix(in srgb, var(--cor-a-bg) 10%, transparent) inset",
+            zIndex: 2,
           }}
         />
       );
@@ -218,9 +195,10 @@ export default function SnakeGame() {
   return (
     <div className="snake-game">
       <div className="snake-game__wrapper">
-        <h4 className="snake-game__title">Jogo da Cobrinha</h4>
-
-        <p className="snake-game__help">Controles: ↑ ↓ ← → ou W A S D</p>
+        <h1 className="snake-game__title">Jogo da Cobrinha</h1>
+        <p className="snake-game__help">
+          Controles: ↑ ↓ ← → ou W A S D
+        </p>
 
         <div className="snake-game__score">Pontos: {score}</div>
 
@@ -231,19 +209,22 @@ export default function SnakeGame() {
             height: boardHeight,
             backgroundSize: `${cellSize}px ${cellSize}px`,
             backgroundImage: `
-              linear-gradient(to right, var(--snake-grid-color) 1px, transparent 1px),
-              linear-gradient(to bottom, var(--snake-grid-color) 1px, transparent 1px)
+              linear-gradient(to right, color-mix(in srgb, var(--cor-a-bg) 4%, transparent) 1px, transparent 1px),
+              linear-gradient(to bottom, color-mix(in srgb, var(--cor-a-bg) 4%, transparent) 1px, transparent 1px)
             `,
           }}
         >
           <div
-            className="snake-game__apple"
             style={{
+              position: "absolute",
               left: apple.x * cellSize,
               top: apple.y * cellSize,
               width: cellSize,
               height: cellSize,
+              background: "#ff6b57",
               borderRadius: Math.max(2, cellSize * 0.2),
+              boxShadow: "0 0 0 2px color-mix(in srgb, #ff6b57 22%, transparent)",
+              zIndex: 2,
             }}
           />
 
@@ -254,24 +235,20 @@ export default function SnakeGame() {
               <div className="snake-game__menu">
                 <h2 className="snake-game__menu-title">Bem-vindo</h2>
                 <p className="snake-game__menu-text">
-                  Digite seu nome para comecar a partida.
+                  Use as setas do teclado ou WASD para mover a cobrinha.
                 </p>
-                <label className="snake-game__field" htmlFor="snake-player-name">
-                  <input
-                    id="snake-player-name"
-                    type="text"
-                    value={playerName}
-                    onChange={(e) => setPlayerName(e.target.value)}
-                    className="snake-game__input"
-                    placeholder="Digite seu nome"
-                    maxLength={40}
-                  />
-                </label>
-
+                <input
+                  type="text"
+                  value={playerName}
+                  onChange={(e) => setPlayerName(e.target.value)}
+                  placeholder="Digite seu nome"
+                  className="snake-game__input"
+                  maxLength={24}
+                />
                 <button
-                  className="snake-game__button"
+                  className={`snake-game__button${canStartGame ? "" : " snake-game__button--disabled"}`}
                   onClick={resetGame}
-                  disabled={!hasPlayerName}
+                  disabled={!canStartGame}
                 >
                   Iniciar jogo
                 </button>
@@ -283,7 +260,9 @@ export default function SnakeGame() {
             <div className="snake-game__overlay">
               <div className="snake-game__menu">
                 <h2 className="snake-game__menu-title">Você perdeu</h2>
-                <p className="snake-game__menu-text">Pontuação final: {score}</p>
+                <p className="snake-game__menu-text">
+                  {playerName.trim()}, sua pontuação final foi {score}.
+                </p>
                 <button className="snake-game__button" onClick={resetGame}>
                   Jogar novamente
                 </button>
@@ -291,8 +270,6 @@ export default function SnakeGame() {
             </div>
           )}
         </div>
-
-        
       </div>
     </div>
   );

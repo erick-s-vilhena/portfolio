@@ -19,7 +19,18 @@ import { BsArrowRight } from 'react-icons/bs';
 export default function Projetos() {
   const [projetoAtivo, setProjetoAtivo] = useState(12);
   const [hoverBloqueado, setHoverBloqueado] = useState(false);
+  const [modoUmPrincipal, setModoUmPrincipal] = useState(false);
   const hoverTimeoutRef = useRef(null);
+  const gestoRef = useRef({
+    pointerId: null,
+    startX: 0,
+    startY: 0,
+    deltaX: 0,
+    deltaY: 0,
+    lockedAxis: null,
+    active: false,
+  });
+  const suprimirClickAteRef = useRef(0);
   const projetos = [
     {
       img: ImgProLand1,
@@ -148,6 +159,61 @@ export default function Projetos() {
     }, 380);
   }
 
+  function mudarProjetoPorDirecao(direction) {
+    bloquearHoverTemporariamente();
+    setProjetoAtivo((prev) => {
+      if (direction < 0) {
+        return (prev - 1 + projetos.length) % projetos.length;
+      }
+
+      return (prev + 1) % projetos.length;
+    });
+  }
+
+  function finalizarGesto(evento) {
+    const gesto = gestoRef.current;
+
+    if (!gesto.active) return;
+
+    if (
+      gesto.lockedAxis === 'x' &&
+      Math.abs(gesto.deltaX) >= 55 &&
+      Math.abs(gesto.deltaX) > Math.abs(gesto.deltaY)
+    ) {
+      suprimirClickAteRef.current = Date.now() + 250;
+      mudarProjetoPorDirecao(gesto.deltaX < 0 ? 1 : -1);
+    }
+
+    if (evento?.currentTarget && gesto.pointerId != null) {
+      try {
+        evento.currentTarget.releasePointerCapture(gesto.pointerId);
+      } catch {}
+    }
+
+    gestoRef.current = {
+      pointerId: null,
+      startX: 0,
+      startY: 0,
+      deltaX: 0,
+      deltaY: 0,
+      lockedAxis: null,
+      active: false,
+    };
+  }
+
+  useEffect(() => {
+    function atualizarModoUmPrincipal() {
+      setModoUmPrincipal(window.innerWidth <= 1060);
+    }
+
+    atualizarModoUmPrincipal();
+    window.addEventListener('resize', atualizarModoUmPrincipal);
+
+    return () => {
+      window.removeEventListener('resize', atualizarModoUmPrincipal);
+    };
+  }, []);
+
   useEffect(() => {
     return () => {
       if (hoverTimeoutRef.current) {
@@ -163,11 +229,50 @@ export default function Projetos() {
         <p>Algumas logotipos e imagens dos projetos desenvolvidos foram omitidos para proteção de direitos autorais.</p>
       </h1>
 
-      <div className="carousel-shell">
+      <div
+        className="carousel-shell"
+        onPointerDown={(evento) => {
+          if (evento.pointerType === 'mouse' && evento.button !== 0) return;
+          if (evento.target.closest('a')) return;
+
+          gestoRef.current = {
+            pointerId: evento.pointerId,
+            startX: evento.clientX,
+            startY: evento.clientY,
+            deltaX: 0,
+            deltaY: 0,
+            lockedAxis: null,
+            active: true,
+          };
+
+          evento.currentTarget.setPointerCapture(evento.pointerId);
+        }}
+        onPointerMove={(evento) => {
+          const gesto = gestoRef.current;
+          if (!gesto.active || gesto.pointerId !== evento.pointerId) return;
+
+          gesto.deltaX = evento.clientX - gesto.startX;
+          gesto.deltaY = evento.clientY - gesto.startY;
+
+          if (!gesto.lockedAxis) {
+            if (Math.abs(gesto.deltaX) > 14 || Math.abs(gesto.deltaY) > 14) {
+              gesto.lockedAxis =
+                Math.abs(gesto.deltaX) > Math.abs(gesto.deltaY) ? 'x' : 'y';
+            }
+          }
+
+          if (gesto.lockedAxis === 'x') {
+            evento.preventDefault();
+          }
+        }}
+        onPointerUp={finalizarGesto}
+        onPointerCancel={finalizarGesto}
+      >
         <div className="container">
           {projetos.map((elemento, index) => {
             const offset = calcularOffset(index);
-            const cardNavegavel = Math.abs(offset) === 2;
+            const cardNavegavel =
+              Math.abs(offset) === 2 || (modoUmPrincipal && Math.abs(offset) === 1);
 
             return (
               <div
@@ -175,15 +280,10 @@ export default function Projetos() {
                 className={`sigle-projetos ${index === projetoAtivo ? 'ativo' : ''} ${projetoVisivel(offset) ? 'visivel' : 'oculto'} ${cardNavegavel ? 'navegavel' : ''}`}
                 data-offset={offset}
                 onClick={() => {
-                  if (cardNavegavel) {
-                    bloquearHoverTemporariamente();
-                    setProjetoAtivo((prev) => {
-                      if (offset < 0) {
-                        return (prev - 1 + projetos.length) % projetos.length;
-                      }
+                  if (Date.now() < suprimirClickAteRef.current) return;
 
-                      return (prev + 1) % projetos.length;
-                    });
+                  if (cardNavegavel) {
+                    mudarProjetoPorDirecao(offset < 0 ? -1 : 1);
                   }
                 }}
               >

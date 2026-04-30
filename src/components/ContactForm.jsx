@@ -32,7 +32,7 @@ export default function ContactForm() {
   return (
     <div className="contact-form-page">
       <div className="contact-form-card">
-        <h2 className="contact-form-title">Entre em Contato:</h2>
+        <h2 className="contact-form-title">Contato</h2>
 
         <form onSubmit={handleSubmit} className="contact-form">
           <div className="contact-form-field">
@@ -75,14 +75,12 @@ export default function ContactForm() {
               onChange={handleChange}
               placeholder=" "
               required
-              maxLength={3000}
               rows={6}
               className="contact-form-textarea"
             />
             <label htmlFor="mensagem" className="contact-form-label">
-              Mensagem
+              Digite sua mensagem
             </label>
-            <div className="contact-form-counter">{form.mensagem.length}/3000</div>
           </div>
 
           <button type="submit" className="contact-form-button">
