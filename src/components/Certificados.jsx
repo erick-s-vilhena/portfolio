@@ -1,5 +1,5 @@
 import '../styles/Certificados.scss';
-import { RiExternalLinkLine } from 'react-icons/ri';
+import { useEffect, useState } from 'react';
 import ImgWebDesigner from '../img/ImgWebDesigner.png'
 import ImgBancoDeDados from '../img/ImgBancoDeDados.png'
 import ImgFrontEndCompleto from '../img/ImgFrontEndComp.png'
@@ -10,13 +10,22 @@ import ImgNodeJs from '../img/ImgNodeJs.png';
 import ImgDesignerWeb from '../img/ImgDesignerWeb.png';
 import ImgDesenvolvimentoWeb from '../img/ImgDesenvolvimentoWeb.png';
 import ImgLogicaDePrograma from '../img/ImgLogicaDePrograma.png';
-import { MdOutlineContentCopy } from 'react-icons/md';
 import { FaExpand } from 'react-icons/fa';
 import { useContexto } from '../context/Contexto';
 
 export default function Certificados({ativo}){
+    const oculta = ativo != null && ativo !== 1;
+    const [mostrarTodos, setMostrarTodos] = useState(false);
 
-    const { certificadoAberto, setCertificadoAberto, codigo, setCodigo } = useContexto();
+    const { setCertificadoAberto, codigo } = useContexto();
+
+    useEffect(() => {
+        if (!codigo) return;
+
+        navigator.clipboard.writeText(codigo)
+            .then(() => console.log("Copiado!"))
+            .catch(err => console.log("Erro:", err));
+    }, [codigo]);
 
     const infoCertificado = [
         {
@@ -73,35 +82,40 @@ export default function Certificados({ativo}){
 
 
    return (
-       <div className={`Certificados slide ${ativo !== 1 && true}`} >  
-       {console.log(certificadoAberto)}         
-            <div className="container-certificados">
+       <div className={`Certificados ${ativo != null ? 'slide' : ''} ${oculta ? 'true' : ''}`} >  
+            <div className={`container-certificados ${mostrarTodos ? 'expandido' : 'recolhido'}`}>
                 {infoCertificado.map((item, index)=>{
                     return(
                         <div key={index} 
-                            className={`sigle-certificado hidden ${index % 2 == 0 ? 'lbt' : 'rbt'}`}
-                            onClick={()=> window.innerWidth < 768 &&  setCertificadoAberto(item)}>
-                            <div className="img" onClick={()=> setCertificadoAberto(item)}>
+                            className="sigle-certificado"
+                            onClick={() => setCertificadoAberto(item)}>
+                            <div
+                                className="img"
+                                onClick={(e)=>{
+                                    e.stopPropagation();
+                                    setCertificadoAberto(item);
+                                }}>
                                 <img src={item.img} alt={item.curso}/>
                                 <FaExpand />
                             </div>
                              
                             <div className='texto'>
                                 <h3>{item.curso}</h3>
-
-                                <p title={item.codigo}>Credencial: <MdOutlineContentCopy 
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation(); // 
-                                                                            setCodigo(item.codigo);
-                                                                            }} 
-                                                                        style={{color: codigo == item.codigo && '#37c02d'}}/></p>
-                                {/* <span>{item.codigo}</span> */}
-                                <a href='https://cursos.dankicode.com/validate-certificate' target="_blank">Verificar credencial <RiExternalLinkLine /></a>
                             </div>
                         </div>
                     )
                 })}
             </div>
+            {infoCertificado.length > 4 && (
+                <div className="acoes-certificados">
+                    <button
+                        type="button"
+                        className="btn-ver-mais"
+                        onClick={() => setMostrarTodos((valorAtual) => !valorAtual)}>
+                        {mostrarTodos ? 'Ver menos' : 'Ver mais'}
+                    </button>
+                </div>
+            )}
        </div>
     )
 }

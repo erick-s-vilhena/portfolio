@@ -4,42 +4,328 @@
     width: calc(100% - 40px);
     max-width: 1480px;
     height: 100vh;
-    aspect-ratio: 1/1;
+    overflow: hidden;
+    --forma-opacity: 0.48;
 
     .luz{
         position: absolute;
-        display: flex;
-        width: 50%;
-        max-width: 500px;
-        margin: 10px;
-        border-radius: 50%;
-        filter: blur(200px) opacity(var(--cor-opacity));
-        aspect-ratio: 1/1;
-        background-color: var(--cor-secun);
-        transition: all 2s;
+        width: 100px;
+        aspect-ratio: 1 / 1;
+        top: var(--forma-top);
+        left: var(--forma-left);
+        opacity: var(--forma-opacity);
+        transform: scale(1);
+        transition: top 2s cubic-bezier(0.22, 0.8, 0.2, 1), left 2s cubic-bezier(0.22, 0.8, 0.2, 1), opacity 0.6s ease, transform 0.6s ease;
 
-        @media screen and (max-width: 600px) {
-            filter: blur(80px) opacity(var(--cor-opacity));
+        &::before{
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 3px solid var(--forma-cor, var(--cor-secun));
+            background-color: transparent;
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--forma-cor, var(--cor-secun)) 60%, transparent);
+            transform: rotate(var(--rotacao-luz, 0deg));
+            transform-origin: center;
+            animation: giro-quadrado 26s linear infinite;
+            transition: transform 2s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        &.menor{
+            width: 50px;
+
+            &::before{
+                border-width: 2px;
+                animation-direction: reverse;
+            }
         }
 
         &.um{
-            top: 0%;
-            left: 0%;
+            --forma-top: 12%;
+            --forma-left: 18%;
+            --forma-cor: var(--cor-secun);
         }
 
         &.dois{
-            bottom: 0%;
-            right: 0%;
+            --forma-top: 78%;
+            --forma-left: 72%;
+            --forma-cor: var(--cor-secun);
+        }
+
+        &.tres{
+            --forma-top: 16%;
+            --forma-left: 68%;
+            --forma-cor: var(--cor-prima);
+        }
+
+        &.quatro{
+            --forma-top: 80%;
+            --forma-left: 14%;
+            --forma-cor: var(--cor-prima);
         }
 
         @media screen and (max-width: 768px) {
             &.um{
-                top: 10%;
+                --forma-top: 14%;
+                --forma-left: 8%;
             }
 
             &.dois{
-                bottom: 10%;
+                --forma-top: 76%;
+                --forma-left: 74%;
+            }
+
+            &.tres{
+                --forma-top: 20%;
+                --forma-left: 76%;
+            }
+
+            &.quatro{
+                --forma-top: 78%;
+                --forma-left: 10%;
             }
         }
+    }
+
+    &.entrada-ativa:not(.certificados-orbita){
+        .luz{
+            animation: surgir-quadrado 0.8s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+
+            &.um{
+                animation-delay: 0.08s;
+            }
+
+            &.tres{
+                animation-delay: 0.16s;
+            }
+
+            &.quatro{
+                animation-delay: 0.24s;
+            }
+
+            &.dois{
+                animation-delay: 0.32s;
+            }
+        }
+    }
+
+    &.sobre-ativa{
+        .luz{
+            &.um{
+                --forma-top: 16%;
+                --forma-left: 80%;
+            }
+
+            &.dois{
+                --forma-top: 80%;
+                --forma-left: 14%;
+            }
+
+            &.tres{
+                --forma-top: 12%;
+                --forma-left: 18%;
+            }
+
+            &.quatro{
+                --forma-top: 78%;
+                --forma-left: 90%;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .luz{
+                &.um{
+                    --forma-top: 20%;
+                    --forma-left: 76%;
+                }
+
+                &.dois{
+                    --forma-top: 78%;
+                    --forma-left: 10%;
+                }
+
+                &.tres{
+                    --forma-top: 14%;
+                    --forma-left: 8%;
+                }
+
+                &.quatro{
+                    --forma-top: 76%;
+                    --forma-left: 74%;
+                }
+            }
+        }
+    }
+
+    &.projetos-ativa{
+        .luz{
+            transition: top 1.4s cubic-bezier(0.22, 0.8, 0.2, 1), left 1.4s cubic-bezier(0.22, 0.8, 0.2, 1), opacity 0.6s ease, transform 0.6s ease;
+
+            &.um,
+            &.quatro{
+                --forma-top: 79%;
+                --forma-left: 12%;
+                animation: deslizar-projetos-esquerda 60s linear infinite;
+            }
+
+            &.dois,
+            &.tres{
+                --forma-top: 79%;
+                --forma-left: 76%;
+                animation: deslizar-projetos-direita 60s linear infinite;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .luz{
+                &.um,
+                &.quatro{
+                    --forma-top: 84%;
+                    --forma-left: 8%;
+                }
+
+                &.dois,
+                &.tres{
+                    --forma-top: 84%;
+                    --forma-left: 70%;
+                }
+            }
+        }
+    }
+
+    &.certificados-ativa{
+        .luz{
+            transition: top 1.4s cubic-bezier(0.22, 0.8, 0.2, 1), left 1.4s cubic-bezier(0.22, 0.8, 0.2, 1), opacity 0.6s ease, transform 0.6s ease;
+
+            &.um,
+            &.quatro{
+                --forma-top: 50%;
+                --forma-left: 62%;
+            }
+
+            &.dois,
+            &.tres{
+                --forma-top: 50%;
+                --forma-left: 30%;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .luz{
+                &.um,
+                &.quatro,
+                &.dois,
+                &.tres{
+                    --forma-top: 50%;
+                }
+
+                &.um,
+                &.quatro{
+                    --forma-left: 64%;
+                }
+
+                &.dois,
+                &.tres{
+                    --forma-left: 24%;
+                }
+            }
+        }
+    }
+
+    &.certificados-ativa.certificados-orbita{
+        .luz{
+            top: 50%;
+            left: 50%;
+            transition: opacity 0.6s ease;
+            animation: orbitar-centro 30s linear infinite;
+
+            &.um,
+            &.quatro{
+                --orbita-base: 0deg;
+                --orbita-raio: min(22vw, 200px);
+            }
+
+            &.dois,
+            &.tres{
+                --orbita-base: 180deg;
+                --orbita-raio: min(22vw, 200px);
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .luz{
+                &.um,
+                &.quatro,
+                &.dois,
+                &.tres{
+                    --orbita-raio: min(26vw, 130px);
+                }
+            }
+        }
+    }
+}
+
+[data-theme="light"]{
+    .Luz_bg{
+        --forma-opacity: 0.72;
+    }
+}
+
+@keyframes surgir-quadrado{
+    0%{
+        opacity: 0;
+        transform: scale(0.55);
+    }
+
+    100%{
+        opacity: var(--forma-opacity);
+        transform: scale(1);
+    }
+}
+
+@keyframes giro-quadrado{
+    0%{
+        transform: rotate(var(--rotacao-luz, 0deg));
+    }
+
+    100%{
+        transform: rotate(calc(var(--rotacao-luz, 0deg) + 360deg));
+    }
+}
+
+@keyframes orbitar-centro{
+    0%{
+        transform: translate(-50%, -50%) rotate(var(--orbita-base, 0deg)) translateX(var(--orbita-raio, 0px)) scale(1);
+    }
+
+    100%{
+        transform: translate(-50%, -50%) rotate(calc(var(--orbita-base, 0deg) + 360deg)) translateX(var(--orbita-raio, 0px)) scale(1);
+    }
+}
+
+@keyframes deslizar-projetos-esquerda{
+    0%{
+        transform: translateX(0);
+    }
+
+    50%{
+        transform: translateX(220px);
+    }
+
+    100%{
+        transform: translateX(0);
+    }
+}
+
+@keyframes deslizar-projetos-direita{
+    0%{
+        transform: translateX(0);
+    }
+
+    50%{
+        transform: translateX(-220px);
+    }
+
+    100%{
+        transform: translateX(0);
     }
 }

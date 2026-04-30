@@ -3,58 +3,148 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    min-height: calc(100vh - 90px);
     z-index: 5;
     padding-right: 50px;
+    //margin-bottom: 100px;
     //background-color: rgba(255, 60, 00, 0.100);
 
     h1{
         color: var(--cor-titulo);
-        margin-bottom: 50px;
         width: 100%;
         text-align: center;
-        font-size: clamp(26px, 4vw, 42px);;
+        font-size: clamp(26px, 4vw, 42px);
+        //background-color: red;
     }
 
     .contatos-container{
-        width: 40%;
+        width: 100%;
+        max-width: 520px;
         display: flex;
         justify-content: center;
         flex-direction: column;
+        flex-shrink: 0;
         //background-color: rgba(255, 60, 00, 0.100);
 
         .icons_contato{
                 width: 100%;
-                height: 80px;
-                display: flex;
-                justify-content: space-around;
+                max-width: 100%;
+                min-height: 92px;
+                margin: 0;
+                display: grid;
+                grid-template-columns: repeat(4, minmax(48px, 1fr));
                 align-items: center;
+                gap: 10px;
                 padding: 0 !important;
+
+                @mixin sugir($tempo: 1s, $delay: 0s){
+                    @keyframes sugir-contatos {
+                        100% {
+                            left: 0;
+                            filter: opacity(1);
+                        }
+                    }
+
+                    &{
+                        animation: sugir-contatos $tempo forwards;
+                        animation-delay: $delay;
+                    }
+                }
             
                 a{  
-                    width: 50px;
-                    height: 50px;
+                    position: relative;
+                    left: -100px;
+                    filter: opacity(0);
+                    width: 48px;
+                    height: 48px;
                     display: flex;
+                    justify-self: center;
                     align-items: center;
                     justify-content: center;
                     font-size: 28px;
-                    border: 3px solid var(--cor-prima);
-                    border-radius: 2px;
-                    color: var(--cor-prima);
-                    transition: all 0.2s;
+                    border-radius: 12px;
+                    background-color: var(--cor-bg);
+                    color: var(--cor-titulo);
+                    border: 3px solid var(--cor-titulo);
+                    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+                    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
                     flex-shrink: 0;
 
+                    &::before{
+                        content: attr(data-label);
+                        position: absolute;
+                        top: calc(100% + 10px);
+                        left: 50%;
+                        transform: translateX(-50%) translateY(-6px);
+                        background-color: #0f7ac5;
+                        color: #fff;
+                        font-size: 12px;
+                        font-weight: 700;
+                        line-height: 1;
+                        padding: 7px 10px;
+                        border-radius: 6px;
+                        opacity: 0;
+                        pointer-events: none;
+                        transition: opacity 0.2s ease, transform 0.2s ease;
+                        white-space: nowrap;
+                    }
+
                     &:hover{
-                        width: 60px;
-                        height: 60px;
-                        font-size: 32px;
-                       
+                        transform: translateY(-3px) scale(1.06);
+                        background-color: #0f7ac5;
+                        border-color: #0f7ac5;
+                        color: #fff;
+                        box-shadow: 0 12px 24px rgba(15, 122, 197, 0.3);
+                    }
+
+                    &:hover::before{
+                        opacity: 1;
+                        transform: translateX(-50%) translateY(0);
+                    }
+
+                    &[data-label='GitHub']:hover{
+                        background-color: #0d1117;
+                        border-color: #0d1117;
+                        box-shadow: 0 12px 24px rgba(13, 17, 23, 0.3);
+                    }
+
+                    &[data-label='GitHub']::before{
+                        background-color: #0d1117;
+                    }
+
+                    &[data-label='E-mail']:hover{
+                        background-color: var(--cor-prima);
+                        border-color: var(--cor-prima);
+                        box-shadow: 0 12px 24px rgba(127, 90, 240, 0.3);
+                    }
+
+                    &[data-label='E-mail']::before{
+                        background-color: var(--cor-prima);
+                    }
+
+                    &[data-label='Curriculo']:hover{
+                        background-color: var(--cor-secun);
+                        border-color: var(--cor-secun);
+                        box-shadow: 0 12px 24px rgba(45, 212, 191, 0.3);
+                    }
+
+                    &[data-label='Curriculo']::before{
+                        background-color: var(--cor-secun);
+                        color: #fff;
+                    }
+
+                    @for $i from 0 through 3 {
+                        &:nth-child(#{4 - $i}) {
+                            @include sugir(0.5s, $i * 0.2s);
+                        }
                     }
                 }
             }
     }
 
         .game{
-        width: 60%;
+        flex: 1;
+        min-width: 0;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -78,6 +168,10 @@
         max-width: 500px;
         margin: 0 auto;
         width: 100%;
+
+        .icons_contato{
+          justify-content: center;
+        }
       }
 
       .game{
@@ -86,6 +180,7 @@
     }
 
     @media screen and (max-width: 968px) {
+      min-height: calc(100vh - 40px);
       padding-right: 0;
 
     }

@@ -9,3 +9,116 @@
     align-items: end;
     //background-color: #00ffff1a;
 }
+
+.route-content{
+    width: 100%;
+    padding-right: 50px;
+    position: relative;
+
+    &.is-transitioning{
+        overflow: hidden;
+    }
+
+    .route-pane{
+        width: 100%;
+        position: relative;
+        will-change: transform, opacity;
+
+        &.inner{
+            padding-top: 90px;
+        }
+
+        &.home{
+            padding-top: 0;
+        }
+
+        &.settled{
+            z-index: 2;
+        }
+
+        &.route-pane-prev{
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        &.route-pane-current{
+            z-index: 2;
+        }
+
+        &.forward.enter{
+            animation: session-enter-from-bottom 0.7s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+        }
+
+        &.forward.leave{
+            animation: session-leave-to-top 0.7s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+        }
+
+        &.backward.enter{
+            animation: session-enter-from-top 0.7s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+        }
+
+        &.backward.leave{
+            animation: session-leave-to-bottom 0.7s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        padding-right: 0;
+
+        .route-pane{
+            &.inner{
+                padding-top: 40px;
+            }
+        }
+    }
+}
+
+@keyframes session-enter-from-bottom{
+    0%{
+        opacity: 0.92;
+        transform: translateY(100%);
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes session-leave-to-top{
+    0%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100%{
+        opacity: 0.35;
+        transform: translateY(-100%);
+    }
+}
+
+@keyframes session-enter-from-top{
+    0%{
+        opacity: 0.92;
+        transform: translateY(-100%);
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes session-leave-to-bottom{
+    0%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100%{
+        opacity: 0.35;
+        transform: translateY(100%);
+    }
+}

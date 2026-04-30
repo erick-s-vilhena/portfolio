@@ -4,11 +4,13 @@ import { CgMail } from 'react-icons/cg';
 import { TbFileCv } from 'react-icons/tb';
 import Img_Inicio from './Img_Inicio';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Inicio(){
 
   const [displaySeta, setDisplaySeta] = useState(true)
   const timeout = useRef();
+  const navigate = useNavigate();
 
   useEffect(()=>{
     function useScroll(){
@@ -28,7 +30,7 @@ export default function Inicio(){
   },[]);
 
   function rolarScroll(){
-    document.getElementById("sobre")?.scrollIntoView({ behavior: "smooth" });
+    navigate('/sobre');
   }
 
   return(
@@ -43,22 +45,30 @@ export default function Inicio(){
                   <a  
                       href='https://linkedin.com/in/erick-vilhena/' 
                       target='_blank'
-                      rel="noopener noreferrer">
+                      rel="noopener noreferrer"
+                      aria-label='LinkedIn'
+                      data-label='LinkedIn'>
                       <RiLinkedinFill/>
                   </a>
                   
                   <a href='https://github.com/erick-s-vilhena' 
                       target='_blank'
-                      rel="noopener noreferrer"><RiGithubFill/>
+                      rel="noopener noreferrer"
+                      aria-label='GitHub'
+                      data-label='GitHub'><RiGithubFill/>
                   </a>
 
                   <a href='mailto:erick.s.vilhena@gmail.com' 
                       target='_blank'
-                      rel="noopener noreferrer"><CgMail/></a>
+                      rel="noopener noreferrer"
+                      aria-label='E-mail'
+                      data-label='E-mail'><CgMail/></a>
 
                   <a href='https://drive.google.com/file/d/1DL-zjk_awGWAzrbJPufkkp4gFuxPGZOQ/view?usp=sharing' 
                       target='_blank'
-                      rel="noopener noreferrer"><TbFileCv/></a>
+                      rel="noopener noreferrer"
+                      aria-label='Curriculo'
+                      data-label='Curriculo'><TbFileCv/></a>
                   
                   <div className='line'>
                       <div className='line_roxa'></div>
@@ -74,7 +84,11 @@ export default function Inicio(){
           </div>
         </div>
 
-        <div className={`seta_continue ${displaySeta}`}>
+        <div
+          className={`seta_continue ${displaySeta}`}
+          data-label='Vamos la!'
+          aria-label='Ir para sobre'
+        >
             <RiArrowDownDoubleFill className='seta' onClick={()=> rolarScroll()}/>
         </div>
     </div>

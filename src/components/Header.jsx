@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import '../styles/Header.scss'
 import Logo from './Logo';
-import Menu from './Menu';
-import Btn_Menu from './Btn_Menu';
+import Btn_Tema from './Btn_Tema';
 
 export default function Header(){
 
-  const [btnMenu, setBtnMenu] = useState(false)
   const [blurHeader, setBlurHeader] = useState(false)
   const timeout = useRef();
 
@@ -32,10 +30,7 @@ export default function Header(){
     <div className={`Header ${blurHeader}`}>
         <div className="center">
           <Logo/>
-
-          {/* <Menu btnMenu={btnMenu}/>
-
-          <Btn_Menu btnMenu={btnMenu} setBtnMenu={setBtnMenu}/> */}
+          <Btn_Tema />
         </div>
     </div>
   )

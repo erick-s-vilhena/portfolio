@@ -32,58 +32,57 @@ export default function ContactForm() {
   return (
     <div className="contact-form-page">
       <div className="contact-form-card">
-        <h2 className="contact-form-title">Contato</h2>
-        <p className="contact-form-subtitle">
-          Preencha o formulário abaixo para entrar em contato.
-        </p>
+        <h2 className="contact-form-title">Entre em Contato:</h2>
 
         <form onSubmit={handleSubmit} className="contact-form">
           <div className="contact-form-field">
-            <label htmlFor="nome" className="contact-form-label">
-              Nome
-            </label>
             <input
               id="nome"
               name="nome"
               type="text"
               value={form.nome}
               onChange={handleChange}
-              placeholder="Digite seu nome"
+              placeholder=" "
               required
               className="contact-form-input"
             />
+            <label htmlFor="nome" className="contact-form-label">
+              Digite seu nome
+            </label>
           </div>
 
           <div className="contact-form-field">
-            <label htmlFor="email" className="contact-form-label">
-              E-mail
-            </label>
             <input
               id="email"
               name="email"
               type="email"
               value={form.email}
               onChange={handleChange}
-              placeholder="Digite seu e-mail"
+              placeholder=" "
               required
               className="contact-form-input"
             />
+            <label htmlFor="email" className="contact-form-label">
+              Digite seu e-mail
+            </label>
           </div>
 
-          <div className="contact-form-field">
-            <label htmlFor="mensagem" className="contact-form-label">
-              Mensagem
-            </label>
+          <div className="contact-form-field contact-form-field--textarea">
             <textarea
               id="mensagem"
               name="mensagem"
               value={form.mensagem}
               onChange={handleChange}
-              placeholder="Digite sua mensagem"
+              placeholder=" "
               required
+              maxLength={3000}
               rows={6}
               className="contact-form-textarea"
             />
+            <label htmlFor="mensagem" className="contact-form-label">
+              Mensagem
+            </label>
+            <div className="contact-form-counter">{form.mensagem.length}/3000</div>
           </div>
 
           <button type="submit" className="contact-form-button">

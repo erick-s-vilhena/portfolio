@@ -10,7 +10,8 @@ import Firebase from '../img/firebase.png';
 import Tailwind from '../img/tailwind.png';
 import { useContexto } from '../context/Contexto';
 
-export default function Habilidades({ativo}){
+export default function Habilidades({ativo, compacto = false}){
+    const oculta = ativo != null && ativo !== 2;
 
     const { habilidadeOpen, setHabilidadeOpen} = useContexto();
 
@@ -64,18 +65,20 @@ const infoHablidades = [
 
 
    return (
-       <div className={`Habilidades slide ${ativo !== 2 && true}`}>
-            <div className="container-habilidades">
+       <div className={`Habilidades ${compacto ? 'compacto' : ''} ${ativo != null ? 'slide' : ''} ${oculta ? 'true' : ''}`}>
+            <div className={`container-habilidades ${compacto ? 'compacto' : ''}`}>
                 {infoHablidades.map((item, index)=>{
                     return(
                         <div key={index} 
-                        className='sigle-habilidades hidden bt'
+                        className={`sigle-habilidades hidden bt ${compacto ? 'compacto' : ''}`}
+                        data-label={item.habilidade}
+                        data-skill={item.habilidade}
                         onClick={()=> setHabilidadeOpen(item)}>
                             <div className="img">
                                 <img src={item.logo} alt="logo" />
                             </div>
                             
-                            <h3>{item.habilidade}</h3>
+                            {!compacto && <h3>{item.habilidade}</h3>}
                         </div>
                     )
                 })}

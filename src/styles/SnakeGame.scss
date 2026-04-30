@@ -1,9 +1,11 @@
 .snake-game {
-  background-color: var(--cor-fundo);
+  --snake-grid-color: rgba(88, 91, 95, 0.12);
+  background-color: var(--cor-bg);
   display: flex;
   align-items: center;
   padding: 16px;
   //background-color: rgba(255, 60, 00, 0.100);
+  margin-top: -30px;
 
   &__wrapper {
     position: relative;
@@ -16,14 +18,14 @@
 
   &__title {
     margin: 0;
-    font-size: clamp(24px, 4vw, 36px);
+    font-size: clamp(20px, 3vw, 32px);
     font-weight: 800;
     color: var(--cor-titulo);
   }
 
   &__board {
     position: relative;
-    background-color: #16161f;
+    background-color: var(--cor-menu);
     border: 2px solid rgba(127, 90, 240, 0.45);
     border-radius: 18px;
     overflow: hidden;
@@ -31,14 +33,16 @@
   }
 
   &__score {
+    align-self: flex-start;
     z-index: 5;
     padding: 8px 12px;
     border-radius: 10px;
-    background: rgba(15, 14, 23, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: #fffffe;
+    background: var(--cor-menu);
+    border: 1px solid rgba(88, 91, 95, 0.18);
+    color: var(--cor-titulo);
     font-weight: 700;
     font-size: 14px;
+    text-align: left;
     backdrop-filter: blur(6px);
   }
 
@@ -55,8 +59,8 @@
 
   &__menu {
     width: min(92%, 360px);
-    background: #1b1a27;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--cor-menu);
+    border: 1px solid rgba(88, 91, 95, 0.18);
     border-radius: 18px;
     padding: 24px;
     text-align: center;
@@ -67,13 +71,48 @@
     margin: 0 0 10px;
     font-size: 28px;
     font-weight: 800;
-    color: #fffffe;
+    color: var(--cor-titulo);
   }
 
   &__menu-text {
     margin: 0 0 10px;
-    color: rgba(255, 255, 255, 0.82);
+    color: var(--cor-texto);
     line-height: 1.5;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  &__field-label {
+    color: var(--cor-titulo);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &__input {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(88, 91, 95, 0.2);
+    background: var(--cor-bg);
+    color: var(--cor-titulo);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &::placeholder {
+      color: rgba(88, 91, 95, 0.72);
+    }
+
+    &:focus {
+      border-color: var(--cor-prima);
+      box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.18);
+    }
   }
 
   &__button {
@@ -88,6 +127,11 @@
     transition: transform 0.15s ease, opacity 0.15s ease;
     border: none;
     cursor: pointer;
+
+    &:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
   }
 
   &__help {
@@ -110,6 +154,40 @@
 
     &.is-head {
       box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08) inset;
+    }
+  }
+}
+
+[data-theme="dark"] {
+  .snake-game {
+    --snake-grid-color: rgba(255, 255, 255, 0.05);
+
+    &__board {
+      background-color: #16161f;
+    }
+
+    &__score {
+      background: rgba(15, 14, 23, 0.78);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #fffffe;
+    }
+
+    &__menu {
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    &__menu-text {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    &__input {
+      border-color: rgba(255, 255, 255, 0.1);
+      background: rgba(15, 14, 23, 0.92);
+      color: #fffffe;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.42);
+      }
     }
   }
 }

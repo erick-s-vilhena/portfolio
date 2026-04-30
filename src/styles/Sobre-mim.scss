@@ -1,13 +1,20 @@
 .Sobre-mim{
     height: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding-top: 80px;
+    width: 100%;
     //background-color: rgba(0, 255, 255, 0.100);
 
     &.true{
         height: 600px;
         overflow: hidden;
+    }
+
+    .topo{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
     }
 
     .texto{
@@ -16,6 +23,7 @@
         justify-content: center;
         align-items: center;
         flex-shrink: 0;
+        transition-delay: 0.08s !important;
         
         .aux{
             width: 100%;
@@ -46,11 +54,16 @@
                     justify-content: center;
                 }
 
+                a{
+                    text-decoration: none;
+                    display: inline-flex;
+                }
+
                 button{
                     width: 160px;
                     height: 40px;
                     background-color: transparent;
-                    border: 1px solid var(--cor-secun);
+                    border: 2px solid var(--cor-secun);
                     color: var(--cor-titulo);
                     display: flex;
                     align-items: center;
@@ -100,6 +113,14 @@
         }
     }
 
+    .habilidades-inline{
+        width: 100%;
+        max-width: 980px;
+        margin: 34px auto 0;
+        padding: 22px 26px 0;
+        transition-delay: 0.22s !important;
+    }
+
     .perfil{
         width: 100%;
         padding: 20px 0px 20px 20px;
@@ -107,6 +128,7 @@
         justify-content: center;
         align-items: center;
         overflow: hidden;
+        transition-delay: 0.14s !important;
 
         @media screen and (max-width: 869px) {
             padding: 20px;
@@ -192,8 +214,11 @@
     }
 
     @media screen and (max-width: 968px) {
-        flex-direction: column;
         align-items: center;
+
+        .topo{
+            flex-direction: column;
+        }
 
         .texto{
             width: 100%;
@@ -201,6 +226,11 @@
             h3, h2{
                 text-align: center;
             }
+        }
+
+        .habilidades-inline{
+            margin-top: 18px;
+            padding: 18px 0 0;
         }
     }
 }

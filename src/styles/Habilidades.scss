@@ -1,6 +1,5 @@
 .Habilidades{
     height: 100%;
-    padding-top: 40px;
 
     &.true{
         height: 600px;
@@ -33,9 +32,10 @@
             background-color: var(--cor-banner);
             backdrop-filter: blur(10px);
             border-radius: 10px;
-            padding: 20px 0;
+            padding: 0px 0;
             transition: all 0.5s !important;
             cursor: pointer;
+            //background-color: var(--cor-bg)  !important;
             
 
             @media screen and (max-width: 720px) {
@@ -83,6 +83,146 @@
                 color: var(--cor-texto);
                 text-align: center;
             }
+        }
+    }
+
+    &.compacto{
+        height: auto;
+        padding-top: 0;
+        overflow: visible;
+
+        .container-habilidades{
+            max-width: 100%;
+            margin: 0;
+            justify-content: center;
+            gap: 12px;
+            padding: 0;
+            overflow: visible;
+        }
+
+        .sigle-habilidades{
+            width: 56px;
+            height: 56px;
+            max-width: none;
+            padding: 0;
+            border-radius: 12px;
+            background-color: transparent;
+            border: 2px solid var(--cor-titulo);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+            backdrop-filter: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+
+            &::before{
+                content: attr(data-label);
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 50%;
+                transform: translateX(-50%) translateY(-6px);
+                background-color: var(--cor-secun);
+                color: #fff;
+                font-size: 12px;
+                font-weight: 700;
+                line-height: 1;
+                padding: 7px 10px;
+                border-radius: 6px;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.2s ease, transform 0.2s ease;
+                white-space: nowrap;
+                z-index: 5;
+            }
+
+            &:hover{
+                transform: translateY(-3px) scale(1.05) !important;
+                box-shadow: 0 12px 24px rgba(127, 90, 240, 0.28);
+            }
+
+            &:hover::before{
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            .img{
+                width: 36px;
+                height: 36px;
+                margin: 0;
+            }
+
+            h3{
+                display: none;
+            }
+
+            &[data-skill='JavaScript']{
+                &::before{
+                    background-color: var(--js);
+                }
+            }
+
+            &[data-skill='HTML']{
+                &::before{
+                    background-color: var(--html);
+                }
+            }
+
+            &[data-skill='CSS']{
+                &::before{
+                    background-color: var(--css);
+                }
+            }
+
+            &[data-skill='React']{
+                &::before{
+                    background-color: var(--react);
+                }
+            }
+
+            &[data-skill='Firebase']{
+                &::before{
+                    background-color: var(--fb);
+                }
+            }
+
+            &[data-skill='Sass']{
+                &::before{
+                    background-color: var(--sass);
+                }
+            }
+
+            &[data-skill='Tailwind']{
+                &::before{
+                    background-color: var(--tw);
+                }
+            }
+
+            &[data-skill='Figma']{
+                &::before{
+                    background-color: var(--fg);
+                }
+            }
+
+            &[data-skill='Node']{
+                &::before{
+                    background-color: var(--node);
+                }
+            }
+        }
+    }
+}
+
+[data-theme="light"] {
+    .Habilidades.compacto {
+        .sigle-habilidades {
+            background-color: #fff;
+            border: none;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .sigle-habilidades:hover {
+            box-shadow: 0 12px 24px rgba(127, 90, 240, 0.16);
         }
     }
 }

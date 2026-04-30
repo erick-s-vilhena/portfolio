@@ -7,7 +7,7 @@
     min-height: 520px;
     z-index: 10;
     position: relative;
-    margin-bottom: 50px;
+    overflow: hidden;
 
     .texto{
         color: var(--cor-texto);
@@ -37,10 +37,11 @@
 
             .icons_contato{
                 width: 100%;
-                height: 80px;
+                min-height: 92px;
                 display: grid;
-                grid-template-columns: repeat(4, 50px) auto;
+                grid-template-columns: repeat(4, 58px) minmax(80px, 1fr);
                 align-items: center;
+                gap: 10px;
 
                 @mixin sugir($tempo: 1s, $delay: 0s){
                     @keyframes sugir {
@@ -59,24 +60,81 @@
                     position: relative; 
                     left: -100px;
                     filter: opacity(0);
-                    width: 36px;
-                    height: 36px;
-                    margin-right: 20px;
+                    width: 48px;
+                    height: 48px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     font-size: 28px;
-                    border: 3px solid var(--cor-prima);
-                    border-radius: 2px;
-                    color: var(--cor-prima);
-                    transition: all 0.2s;
+                    border-radius: 12px;
+                    background-color: var(--cor-bg);
+                    color: var(--cor-titulo);
+                    border: 3px solid var(--cor-titulo);
+                    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+                    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
                     flex-shrink: 0;
 
+                    &::before{
+                        content: attr(data-label);
+                        position: absolute;
+                        top: calc(100% + 10px);
+                        left: 50%;
+                        transform: translateX(-50%) translateY(-6px);
+                        background-color: #0f7ac5;
+                        color: #fff;
+                        font-size: 12px;
+                        font-weight: 700;
+                        line-height: 1;
+                        padding: 7px 10px;
+                        border-radius: 6px;
+                        opacity: 0;
+                        pointer-events: none;
+                        transition: opacity 0.2s ease, transform 0.2s ease;
+                        white-space: nowrap;
+                    }
+
                     &:hover{
-                        width: 40px;
-                        height: 40px;
-                        font-size: 32px;
-                        margin-right: 16px;
+                        transform: translateY(-3px) scale(1.06);
+                        background-color: #0f7ac5;
+                        border-color: #0f7ac5;
+                        color: #fff;
+                        box-shadow: 0 12px 24px rgba(15, 122, 197, 0.3);
+                    }
+
+                    &:hover::before{
+                        opacity: 1;
+                        transform: translateX(-50%) translateY(0);
+                    }
+
+                    &[data-label='GitHub']:hover{
+                        background-color: #0d1117;
+                        border-color: #0d1117;
+                        box-shadow: 0 12px 24px rgba(13, 17, 23, 0.3);
+                    }
+
+                    &[data-label='GitHub']::before{
+                        background-color: #0d1117;
+                    }
+
+                    &[data-label='E-mail']:hover{
+                        background-color: var(--cor-prima);
+                        border-color: var(--cor-prima);
+                        box-shadow: 0 12px 24px rgba(127, 90, 240, 0.3);
+                    }
+
+                    &[data-label='E-mail']::before{
+                        background-color: var(--cor-prima);
+                    }
+
+                    &[data-label='Curriculo']:hover{
+                        background-color: var(--cor-secun);
+                        border-color: var(--cor-secun);
+                        box-shadow: 0 12px 24px rgba(45, 212, 191, 0.3);
+                    }
+
+                    &[data-label='Curriculo']::before{
+                        background-color: var(--cor-secun);
+                        color: #fff;
                     }
 
                     @for $i from 0 through 4 {
@@ -89,6 +147,7 @@
                 .line{
                     height: 4px;
                     background-color: var(--cor-secun);
+                    margin-left: 4px;
 
                     .line_roxa{
                         width: 50%;
@@ -156,7 +215,7 @@
 
     .seta_continue{
         position: absolute;
-        bottom: 0;
+        bottom: 6px;
         left: 50%;
         transform: translateX(-50%);
         width: 50px;
@@ -169,6 +228,29 @@
 
         &.true{
             filter: opacity(1);
+        }
+
+        &::before{
+            content: attr(data-label);
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            color: var(--cor-titulo);
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1;
+            padding: 7px 10px;
+            border-radius: 6px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            white-space: nowrap;
+        }
+
+        &:hover::before{
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
         @media screen and (max-width:968px){

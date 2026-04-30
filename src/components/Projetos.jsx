@@ -1,8 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '../styles/Projetos.scss';
-import '../styles/style-slide.css';
-import { GenericCarousel } from './script-slide';
-
 import ImgProMetas from '../img/pro-metas.png';
 import ImgProNivelameto from '../img/pro-nivelamento.png';
 import ImgProGeoPortaL from '../img/pro-geoportal.png';
@@ -20,34 +17,9 @@ import ImgProNetflix from '../img/pro-netflix.png';
 import { BsArrowRight } from 'react-icons/bs';
 
 export default function Projetos() {
-  const carouselRef = useRef(null);
-
-  useEffect(() => {
-    if (!carouselRef.current) return;
-
-    const carousel = new GenericCarousel(carouselRef.current, {
-      infinite: false,
-      autoplay: false,
-      autoplaySpeed: 3500,
-      showBullets: true,
-      slidesDesktop: 3.2,
-      slidesTablet: 2.2,
-      slidesMobile: 1.5,
-      slidesLitterMobile: 1.1,
-      dragMobile: true,
-      reverse: true,
-      snap: false,
-    });
-
-    return () => {
-      carousel.destroy();
-    };
-  }, []);
-
-  const abrirProjeto = (link) => {
-    window.open(link, '_blank', 'noopener,noreferrer');
-  };
-
+  const [projetoAtivo, setProjetoAtivo] = useState(12);
+  const [hoverBloqueado, setHoverBloqueado] = useState(false);
+  const hoverTimeoutRef = useRef(null);
   const projetos = [
     {
       img: ImgProLand1,
@@ -149,25 +121,80 @@ export default function Projetos() {
     }
   ];
 
+  function calcularOffset(index) {
+    let diferenca = index - projetoAtivo;
+    const metade = Math.floor(projetos.length / 2);
+
+    if (diferenca > metade) diferenca -= projetos.length;
+    if (diferenca < -metade) diferenca += projetos.length;
+
+    return diferenca;
+  }
+
+  function projetoVisivel(offset) {
+    return Math.abs(offset) <= 2;
+  }
+
+  function bloquearHoverTemporariamente() {
+    setHoverBloqueado(true);
+
+    if (hoverTimeoutRef.current) {
+      window.clearTimeout(hoverTimeoutRef.current);
+    }
+
+    hoverTimeoutRef.current = window.setTimeout(() => {
+      setHoverBloqueado(false);
+      hoverTimeoutRef.current = null;
+    }, 380);
+  }
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        window.clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className="Projetos" id="projetos">
+    <div className={`Projetos ${hoverBloqueado ? 'bloquear-hover' : ''}`} id="projetos">
       <h1 className="hidden bt">
         A Jornada até aqui
         <p>Algumas logotipos e imagens dos projetos desenvolvidos foram omitidos para proteção de direitos autorais.</p>
       </h1>
 
-      <div
-        ref={carouselRef}
-        className="carousel js-carousel container"
-      >
-        <div className="carousel-track">
-          {projetos.map((elemento, index) => (
-            <div key={index} className="carousel-slide">
-              <div className="sigle-projetos">
+      <div className="carousel-shell">
+        <div className="container">
+          {projetos.map((elemento, index) => {
+            const offset = calcularOffset(index);
+            const cardNavegavel = Math.abs(offset) === 2;
+
+            return (
+              <div
+                key={index}
+                className={`sigle-projetos ${index === projetoAtivo ? 'ativo' : ''} ${projetoVisivel(offset) ? 'visivel' : 'oculto'} ${cardNavegavel ? 'navegavel' : ''}`}
+                data-offset={offset}
+                onClick={() => {
+                  if (cardNavegavel) {
+                    bloquearHoverTemporariamente();
+                    setProjetoAtivo((prev) => {
+                      if (offset < 0) {
+                        return (prev - 1 + projetos.length) % projetos.length;
+                      }
+
+                      return (prev + 1) % projetos.length;
+                    });
+                  }
+                }}
+              >
                 <div
                   className="img"
                   style={{ backgroundImage: `url(${elemento.img})` }}
                 />
+
+                <div className="capa">
+                  <h2>{elemento.titulo}</h2>
+                </div>
 
                 <div className="info">
                   <div className="habilidades">
@@ -177,8 +204,6 @@ export default function Projetos() {
                       </div>
                     ))}
                   </div>
-
-                  <h2>{elemento.titulo}</h2>
                   <p>{elemento.descricao}</p>
 
                   <div className="btn">
@@ -186,18 +211,16 @@ export default function Projetos() {
                       href={elemento.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
                     >
                       Acessar projeto <BsArrowRight />
                     </a>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        <div className="carousel-bullets center" />
       </div>
     </div>
   );

@@ -20,30 +20,66 @@
         height: 100%;
         gap: 30px;
 
-        button{
-            width: 16px;
-            height: 16px;
+        a{
+            width: 44px;
+            height: 44px;
             position: relative;
             top: 100px;
-            background-color: transparent;
-            border: 3px solid var(--cor-secun);
             cursor: pointer;
             filter: opacity(0);
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+
+            &::before{
+                content: attr(data-label);
+                position: absolute;
+                right: calc(100% + 14px);
+                top: 50%;
+                transform: translateY(-50%) translateX(6px);
+                background-color: var(--cor-secun);
+                color: #fff;
+                font-size: 12px;
+                font-weight: 700;
+                line-height: 1;
+                padding: 7px 10px;
+                border-radius: 6px;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.2s ease, transform 0.2s ease;
+                white-space: nowrap;
+            }
 
             &:hover{
-                transform: rotate(45deg);
-                background-color: var(--cor-secun);
-                width: 20px;
-                height: 20px;
+                .marcador{
+                    transform: rotate(45deg) scale(1.2);
+                    background-color: var(--cor-secun);
+                    border-color: var(--cor-secun);
+                }
+            }
+
+            &:hover::before{
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
             }
 
             &.ativo{
-                transform: rotate(45deg);
-                background-color: var(--cor-prima);
-                border-color: var(--cor-prima);
-                width: 20px;
-                height: 20px;
+                .marcador{
+                    transform: rotate(45deg) scale(1.2);
+                    background-color: var(--cor-prima);
+                    border-color: var(--cor-prima);
+                }
+            }
+
+            .marcador{
+                width: 16px;
+                height: 16px;
+                border: 3px solid var(--cor-secun);
+                background-color: transparent;
+                transition: all 0.3s ease;
+                display: block;
             }
 
             @mixin sugir_slide($tempo: 1s, $delay: 1s){
@@ -59,7 +95,7 @@
                 }
             }
 
-            @for $i from 0 through 4 {
+            @for $i from 0 through 5 {
                 &:nth-child(#{$i}) {
                   @include sugir_slide(0.5s, $i * 0.2s);
                 }
