@@ -232,9 +232,16 @@
             }
         }
 
-        @media screen and (max-width: 968px) {
+        @media screen and (max-width: 768px) {
             .container-habilidades{
                 gap: 10px;
+            }
+
+            .sigle-habilidades.hidden,
+            .sigle-habilidades.show{
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
             }
 
             .sigle-habilidades{

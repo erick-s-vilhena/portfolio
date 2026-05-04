@@ -235,6 +235,8 @@ export default function Projetos() {
           if (evento.pointerType === 'mouse' && evento.button !== 0) return;
           if (evento.target.closest('a')) return;
 
+          const usarPointerCapture = evento.pointerType !== 'mouse';
+
           gestoRef.current = {
             pointerId: evento.pointerId,
             startX: evento.clientX,
@@ -245,7 +247,9 @@ export default function Projetos() {
             active: true,
           };
 
-          evento.currentTarget.setPointerCapture(evento.pointerId);
+          if (usarPointerCapture) {
+            evento.currentTarget.setPointerCapture(evento.pointerId);
+          }
         }}
         onPointerMove={(evento) => {
           const gesto = gestoRef.current;
@@ -312,7 +316,9 @@ export default function Projetos() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Acessar projeto <BsArrowRight />
+                      <span>
+                        Acessar projeto <BsArrowRight />
+                      </span>
                     </a>
                   </div>
                 </div>

@@ -13,11 +13,12 @@ export default function Header(){
       clearTimeout(timeout.current);
       
       timeout.current =  setTimeout(()=>{
-        setBlurHeader(window.scrollY >=  50 ? true : false);
+        setBlurHeader(window.scrollY >= 50 ? true : false);
       }, 100)
     }
 
     window.addEventListener('scroll', useScroll);
+    useScroll();
 
     return ()=>{
       window.removeEventListener('scroll', useScroll)

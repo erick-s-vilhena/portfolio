@@ -6,6 +6,7 @@
     min-height: calc(100vh - 90px);
     z-index: 5;
     padding-right: 50px;
+    padding-bottom: 32px;
     align-items: start;
     //margin-bottom: 100px;
     //background-color: rgba(255, 60, 00, 0.100);
@@ -25,6 +26,7 @@
         justify-content: center;
         flex-direction: column;
         flex-shrink: 0;
+        padding: 0 10px;
         //background-color: rgba(255, 60, 00, 0.100);
 
         .icons_contato{
@@ -162,27 +164,57 @@
     //   justify-content: left;
     // }
 
-    @media screen and (max-width: 1050px) {
+    @media screen and (max-width: 1220px) {
       flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 24px;
+      max-width: 760px;
+      margin: 0 auto;
+      padding-right: 0;
 
       .contatos-container{
         max-width: 500px;
         margin: 0 auto;
         width: 100%;
+        align-items: center;
+    
 
         .icons_contato{
           justify-content: center;
+          padding: 20px 0 !important;
         }
       }
 
       .game{
-        display: none;
+        width: 100%;
+        flex: none;
+        justify-content: center;
+        margin: 12px auto 0;
       }
     }
 
     @media screen and (max-width: 968px) {
-      min-height: calc(100vh - 40px);
+      min-height: auto;
       padding-right: 0;
+      padding-top: 6px;
+      padding-bottom: 40px;
+      gap: 6px;
+
+      h1{
+        margin-bottom: 4px;
+      }
+
+      .contatos-container{
+        max-width: 500px;
+        margin-bottom: 12px;
+
+        .icons_contato{
+          min-height: auto;
+          gap: 14px;
+          margin-bottom: 2px;
+        }
+      }
 
     }
 }

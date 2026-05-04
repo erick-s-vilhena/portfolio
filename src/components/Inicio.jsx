@@ -17,11 +17,12 @@ export default function Inicio(){
       clearTimeout(timeout.current);
       
       timeout.current =  setTimeout(()=>{
-        setDisplaySeta(window.scrollY >=  50 ? false : true);
+        setDisplaySeta(window.scrollY >= 50 ? false : true);
       }, 100)
     }
 
     window.addEventListener('scroll', useScroll);
+    useScroll();
 
     return ()=>{
       window.removeEventListener('scroll', useScroll)
@@ -58,11 +59,11 @@ export default function Inicio(){
                       data-label='GitHub'><RiGithubFill/>
                   </a>
 
-                  <a href='mailto:erick.s.vilhena@gmail.com' 
-                      target='_blank'
-                      rel="noopener noreferrer"
+                  <button
+                      type='button'
+                      onClick={() => navigate('/contatos')}
                       aria-label='E-mail'
-                      data-label='E-mail'><CgMail/></a>
+                      data-label='E-mail'><CgMail/></button>
 
                   <a href='https://drive.google.com/file/d/1DL-zjk_awGWAzrbJPufkkp4gFuxPGZOQ/view?usp=sharing' 
                       target='_blank'

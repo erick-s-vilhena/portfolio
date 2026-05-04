@@ -28,7 +28,7 @@ export default function Contatos(){
                       data-label='GitHub'><RiGithubFill/>
                   </a>
 
-                  <a href='mailto:erick.s.vilhena@gmail.com' 
+                  <a href='mailto:esv.curriculo@gmail.com' 
                       target='_blank'
                       rel="noopener noreferrer"
                       aria-label='E-mail'

@@ -1,5 +1,7 @@
 .Projetos{
     position: relative;
+    --mobile-card-height: 430px;
+    --mobile-card-expanded-height: 595px;
     width: calc(100% + 20px);
     min-height: calc(100vh - 90px);
     padding-bottom: 0;
@@ -8,8 +10,14 @@
 
     @media screen and (max-width: 768px) {
         width: 100%;
+        min-height: max(calc(100vh - 90px), 645px);
         padding-right: 0;
         margin: 0 auto;
+
+        &:has(.sigle-projetos:hover),
+        &:has(.sigle-projetos:focus-within){
+            min-height: max(calc(100vh - 90px), 805px);
+        }
     }
 
     h1{
@@ -175,27 +183,54 @@
                 display: flex;
                 justify-content: center;
                 user-select: initial;
+                //background-color: red;
 
                 a{
+                    position: relative;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    gap: 10px;
-                    padding: 10px 20px;
-                    background-color: #7F5AF0;
-                    color: #fff;
-                    border: none;
-                    border-radius: 5px;
+                    width: 180px;
+                    height: 40px;
+                    background-color: transparent;
+                    border: 2px solid var(--cor-secun);
+                    color: var(--cor-titulo);
                     cursor: pointer;
-                    transition: background-color 0.2s ease;
+                    overflow: hidden;
                     text-decoration: none;
+                    transition: color 0.2s ease, border-color 0.2s ease;
+                    
 
-                    &:hover{
-                        filter: brightness(80%);
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 100%;
+                        width: 0;
+                        background: var(--cor-secun);
+                        transition: width 0.5s ease-out;
+                        z-index: 0;
+                    }
+
+                    &:hover::before {
+                        width: 100%;
                     }
 
                     svg{
                         font-size: 18px;
+                    }
+
+                    span,
+                    & {
+                        position: relative;
+                        z-index: 1;
+                    }
+
+                    span{
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
                     }
                 }
             }
@@ -460,11 +495,25 @@
 
     @media screen and (max-width: 780px) {
         .container{
-            height: 430px;
+            height: var(--mobile-card-height);
+            padding-bottom: 50px;
+            transition: height 0.28s ease;
+            //background-color: red;
+        }
+
+        &:has(.sigle-projetos:hover) .container,
+        &:has(.sigle-projetos:focus-within) .container{
+            height: var(--mobile-card-expanded-height);
         }
 
         .sigle-projetos{
             width: 290px;
+            //margin-bottom: 50px !important;
+            //background-color: red !important;
+
+             &[data-offset="-2"]{
+                transform: translateX(calc(-50% - 360px)) translateY(64px) scale(0.66);
+            }
 
             &[data-offset="-2"],
             &[data-offset="2"]{
@@ -510,8 +559,11 @@
     }
 
     @media screen and (max-width: 600px) {
+        --mobile-card-height: 410px;
+        --mobile-card-expanded-height: 575px;
+
         .container{
-            height: 410px;
+            height: var(--mobile-card-height);
             --card-width-600: min(290px, calc(100vw - 80px));
         }
 
@@ -542,8 +594,11 @@
     }
 
     @media screen and (max-width: 480px) {
+        --mobile-card-height: 390px;
+        --mobile-card-expanded-height: 545px;
+
         .container{
-            height: 390px;
+            height: var(--mobile-card-height);
             --card-width-600: min(260px, calc(100vw - 80px));
         }
 

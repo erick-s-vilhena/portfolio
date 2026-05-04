@@ -32,7 +32,7 @@ export default function ContactForm() {
   return (
     <div className="contact-form-page">
       <div className="contact-form-card">
-        <h2 className="contact-form-title">Contato</h2>
+        <h3 className="contact-form-title">Entre em contato</h3>
 
         <form onSubmit={handleSubmit} className="contact-form">
           <div className="contact-form-field">
