@@ -8,8 +8,9 @@ const ROWS = 30;
 const INITIAL_SPEED = 120;
 const APPLE_POINTS = 1;
 const GOLDEN_APPLE_POINTS = 5;
-const GOLDEN_APPLE_INTERVAL = 10;
-const GOLDEN_APPLE_DURATION_MS = 5000;
+const GOLDEN_APPLE_MIN_TRIGGER = 5;
+const GOLDEN_APPLE_MAX_TRIGGER = 10;
+const GOLDEN_APPLE_DURATION_MS = 10000;
 
 const createInitialSnake = () => [
   { x: 4, y: 15 },
@@ -34,6 +35,17 @@ const getRandomApple = (snake, blockedPositions = []) => {
 
 const isOppositeDirection = (current, next) => {
   return current.x + next.x === 0 && current.y + next.y === 0;
+};
+
+const shouldSpawnGoldenApple = (normalApplesEaten) => {
+  if (normalApplesEaten < GOLDEN_APPLE_MIN_TRIGGER) return false;
+  if (normalApplesEaten >= GOLDEN_APPLE_MAX_TRIGGER) return true;
+
+  const progress =
+    (normalApplesEaten - GOLDEN_APPLE_MIN_TRIGGER) /
+    (GOLDEN_APPLE_MAX_TRIGGER - GOLDEN_APPLE_MIN_TRIGGER);
+  const chancePercent = 20 + progress * 80;
+  return Math.random() * 100 < chancePercent;
 };
 
 export default function SnakeGame() {
@@ -78,7 +90,9 @@ export default function SnakeGame() {
     clearGoldenAppleTimeout();
     goldenAppleTimeoutRef.current = window.setTimeout(() => {
       goldenAppleRef.current = null;
+      normalApplesEatenRef.current = 0;
       setGoldenApple(null);
+      setNormalApplesEaten(0);
       goldenAppleTimeoutRef.current = null;
     }, GOLDEN_APPLE_DURATION_MS);
   };
@@ -280,7 +294,7 @@ export default function SnakeGame() {
         nextNormalApplesEaten += 1;
         nextApple = getRandomApple(nextSnake, nextGoldenApple ? [nextGoldenApple] : []);
 
-        if (nextNormalApplesEaten % GOLDEN_APPLE_INTERVAL === 0) {
+        if (!nextGoldenApple && shouldSpawnGoldenApple(nextNormalApplesEaten)) {
           nextGoldenApple = getRandomApple(nextSnake, [nextApple]);
           scheduleGoldenAppleRemoval();
         }
@@ -290,6 +304,7 @@ export default function SnakeGame() {
         scoreDelta += GOLDEN_APPLE_POINTS;
         clearGoldenAppleTimeout();
         nextGoldenApple = null;
+        nextNormalApplesEaten = 0;
       }
 
       if (scoreDelta > 0) {
@@ -300,6 +315,11 @@ export default function SnakeGame() {
         appleRef.current = nextApple;
         normalApplesEatenRef.current = nextNormalApplesEaten;
         setApple(nextApple);
+        setNormalApplesEaten(nextNormalApplesEaten);
+      }
+
+      if (ateGoldenApple) {
+        normalApplesEatenRef.current = nextNormalApplesEaten;
         setNormalApplesEaten(nextNormalApplesEaten);
       }
 
