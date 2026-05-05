@@ -35,6 +35,7 @@ export default function Projetos() {
     {
       img: ImgProLand1,
       titulo: 'A 1ª Landing Page',
+      data: '2021',
       link: 'https://erick-s-vilhena.github.io/galeria/',
       recursos: ['HTML', 'CSS'],
       descricao: 'A primeira landing page que fiz, foi um projeto de estudo para aprender a criar layouts responsivos e estilizados usando HTML e CSS.'
@@ -42,6 +43,7 @@ export default function Projetos() {
     {
       img: ImgProLandStar,
       titulo: 'Landing Page Starbucks',
+      data: '2021',
       link: 'https://erick-s-vilhena.github.io/galeria/starbucks/',
       recursos: ['HTML', 'CSS'],
       descricao: 'Uma landing page inspirada no design da Starbucks, focada em criar uma experiência visual agradável, moderna e simples.'
@@ -49,6 +51,7 @@ export default function Projetos() {
     {
       img: ImgProLand2,
       titulo: 'Landing Page para Hotel',
+      data: '2021',
       link: 'https://erick-s-vilhena.github.io/2-Landing-Page/',
       recursos: ['HTML', 'CSS'],
       descricao: 'A landing page para um hotel, projetada para destacar os serviços e comodidades oferecidos, com um design elegante e convidativo.'
@@ -56,6 +59,7 @@ export default function Projetos() {
     {
       img: ImgProLand11,
       titulo: 'Landing Page de Jogo Mobile',
+      data: '2021',
       link: 'https://erick-s-vilhena.github.io/galeria/projeto_11/',
       recursos: ['HTML', 'CSS'],
       descricao: 'Uma landing page para um jogo mobile, focada em criar uma experiência visual agradável e moderna e leve.'
@@ -63,6 +67,7 @@ export default function Projetos() {
     {
       img: ImgProLand10,
       titulo: 'Vendas Online',
+      data: '2022',
       link: 'https://erick-s-vilhena.github.io/galeria/projeto_10/',
       recursos: ['JS', 'HTML', 'CSS'],
       descricao: 'Uma landing page para vendas online, desenvolvida para praticar habilidades avançadas e indroduzir o JavaScript.'
@@ -70,6 +75,7 @@ export default function Projetos() {
     {
       img: ImgProLand3,
       titulo: 'Landing Page para Sistemas',
+      data: '2022',
       link: 'https://erick-s-vilhena.github.io/galeria/projeto_03/',
       recursos: ['JS', 'HTML', 'CSS'],
       descricao: 'Uma landing page para sistemas, projetada para destacar as funcionalidades e benefícios de um software, com um design moderno e interativo.'
@@ -77,6 +83,7 @@ export default function Projetos() {
     {
       img: ImgProLand5,
       titulo: 'Vendas de Carros',
+      data: '2023',
       link: 'https://erick-s-vilhena.github.io/galeria/projeto_05/',
       recursos: ['JS', 'HTML', 'CSS'],
       descricao: 'Uma landing page para vendas de carros, projetada para destacar os veículos disponíveis e facilitar o processo de compra.'
@@ -84,6 +91,7 @@ export default function Projetos() {
     {
       img: ImgProLand4,
       titulo: 'Clinicas Odontológicas',
+      data: '2023',
       link: 'https://erick-s-vilhena.github.io/galeria/projeto_04/',
       recursos: ['JS', 'HTML', 'CSS'],
       descricao: 'Uma landing page focada em criar uma experiência visual agradável e moderna, destacando os serviços oferecidos e facilitando o contato.'
@@ -91,6 +99,7 @@ export default function Projetos() {
     {
       img: ImgProProtejaTerra,
       titulo: 'Protect the Earth',
+      data: '2024',
       link: 'https://erick-s-vilhena.github.io/Protect-the-Earth/',
       recursos: ['JS', 'HTML', 'CSS'],
       descricao: 'Um jogo simples onde o jogador controla uma nave para proteger a Terra de meteoros, desenvolvido para praticar habilidades de JavaScript.'
@@ -98,6 +107,7 @@ export default function Projetos() {
     {
       img: ImgProNetflix,
       titulo: 'Netflix Clone',
+      data: '2024',
       link: 'https://erick-s-vilhena.github.io/galeria/Projeto_Netflix',
       recursos: ['JS', 'HTML', 'Tailwind'],
       descricao: 'Um clone da interface da Netflix, desenvolvido para praticar habilidades de Tailwind CSS e criar uma experiência visual agradável e moderna.'
@@ -105,6 +115,7 @@ export default function Projetos() {
     {
       img: ImgProCrossRoad,
       titulo: 'Cross the Chicken',
+      data: '2024',
       link: 'https://erick-s-vilhena.github.io/cross-the-chicken/',
       recursos: ['JS', 'HTML', 'Tailwind', 'Node'],
       descricao: 'O jogador controla uma galinha para atravessar a rua, evitando carros, desenvolvido para praticar habilidades de JavaScript em ambiente 3D.'
@@ -112,6 +123,7 @@ export default function Projetos() {
     {
       img: ImgProGeoPortaL,
       titulo: 'Geo-Portal PPGDAM',
+      data: '2025',
       link: 'https://geoportal-ppgedam.web.app/',
       recursos: ['JS', 'HTML', 'CSS', 'React', 'Sass', 'Firebase', 'Node'],
       descricao: 'Um portal geográfico para o Programa de Pós-Graduação em Desenvolvimento na Amazônia (PPGDAM/UFPA)'
@@ -119,6 +131,7 @@ export default function Projetos() {
     {
       img: ImgProNivelameto,
       titulo: 'Nivelamento UFPA',
+      data: '2025',
       link: 'https://nivelamentoitec.ufpa.br/',
       recursos: ['JS', 'HTML', 'CSS', 'Figma'],
       descricao: 'Um site de nivelamento para os calouros do Instituto de Tecnologia (ITEC/UFPA), desenvolvido para fornecer conhecimentos e recursos úteis para os novos estudantes.'
@@ -126,6 +139,7 @@ export default function Projetos() {
     {
       img: ImgProMetas,
       titulo: 'Metas de Segurança do Paciente',
+      data: '2025',
       link: 'https://metas-sp.web.app/',
       recursos: ['JS', 'HTML', 'CSS', 'React', 'Sass', 'Figma', 'Firebase'],
       descricao: 'Um projeto para ensinar e avaliar profissionais da saúde sobre metas de segurança do paciente em um ambiente hospitalar.'
@@ -297,7 +311,10 @@ export default function Projetos() {
                 />
 
                 <div className="capa">
-                  <h2>{elemento.titulo}</h2>
+                  <div>
+                    <h2>{elemento.titulo}</h2>
+                    <p>{elemento.data}</p>
+                  </div>
                 </div>
 
                 <div className="info">
