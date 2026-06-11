@@ -7,6 +7,233 @@
   //background-color: red;
 }
 
+.snake-game__layout {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 1040px;
+}
+
+.snake-game__leaderboard {
+  width: 100%;
+  max-width: 260px;
+  flex-shrink: 0;
+  padding-top: 200px;
+}
+
+.snake-game__leaderboard--menu {
+  display: none;
+  max-width: 100%;
+  padding-top: 16px;
+}
+
+@media screen and (max-width: 1100px) {
+  .snake-game__layout {
+    gap: 18px;
+  }
+
+  .snake-game__leaderboard {
+    max-width: 232px;
+    padding-top: 156px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .snake-game__layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .snake-game__leaderboard:not(.snake-game__leaderboard--menu) {
+    display: none;
+  }
+
+  .snake-game__leaderboard--menu {
+    display: block;
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    flex-shrink: 1;
+    margin-top: 0px;
+    padding-top: 0;
+    z-index: 13;
+  }
+
+  .snake-game__board--start {
+    overflow: visible;
+  }
+
+  .snake-game__board-stage .snake-game__overlay {
+    position: absolute;
+    inset: 20px auto auto 50%;
+    transform: translateX(-50%);
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .snake-game__overlay--start {
+    overflow: visible;
+  }
+
+  .snake-game__menu-stack {
+    position: relative;
+    width: min(92vw, 360px);
+    z-index: 20;
+    margin-bottom: 20px;
+  }
+
+  .snake-game__overlay--start .snake-game__menu {
+    width: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    overflow: visible;
+    
+  }
+
+  .snake-game__leaderboard-card--menu {
+    max-height: none;
+    overflow: visible;
+    overscroll-behavior: auto;
+    scrollbar-color: auto;
+    scrollbar-width: auto;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 20px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    padding: 16px 20px 24px;
+    box-sizing: border-box;
+  }
+
+  .snake-game__leaderboard-card--menu .snake-game__leaderboard-title {
+    margin-bottom: 12px;
+    font-size: 22px;
+    padding: 0;
+  }
+
+  .snake-game__leaderboard-card--menu .snake-game__leaderboard-head {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .snake-game__leaderboard-card--menu .snake-game__leaderboard-body {
+    gap: 8px;
+  }
+
+  .snake-game__leaderboard-card--menu .snake-game__leaderboard-row {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 10px 12px;
+  }
+
+  .snake-game__leaderboard-card--menu::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .snake-game__leaderboard-card--menu::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--cor-bg) 42%, var(--cor-menu) 58%);
+  }
+
+  .snake-game__leaderboard-card--menu::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--cor-secun), var(--cor-prima));
+    border: 2px solid color-mix(in srgb, var(--cor-bg) 42%, var(--cor-menu) 58%);
+  }
+
+  .snake-game__leaderboard-card--menu::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--cor-prima), var(--cor-secun));
+  }
+}
+
+.snake-game__leaderboard-card {
+  background: color-mix(in srgb, var(--cor-menu) 94%, var(--cor-bg) 6%);
+  border: 1px solid color-mix(in srgb, var(--cor-a-bg) 10%, transparent);
+  border-radius: 20px;
+  padding: 22px 20px;
+  box-shadow: 0 18px 40px color-mix(in srgb, var(--cor-sombra-menu) 22%, transparent);
+  
+}
+
+.snake-game__leaderboard-card--menu {
+  padding: 18px 16px;
+  text-align: left;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  
+}
+
+.snake-game__leaderboard-title {
+  margin: 0 0 18px;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--cor-titulo);
+  
+}
+
+.snake-game__leaderboard-head,
+.snake-game__leaderboard-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.snake-game__leaderboard-head {
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--cor-a-bg) 10%, transparent);
+  color: var(--cor-texto);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.snake-game__leaderboard-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.snake-game__leaderboard-row {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--cor-bg) 30%, var(--cor-menu) 70%);
+  color: var(--cor-texto);
+}
+
+.snake-game__leaderboard-row strong {
+  color: var(--cor-titulo);
+  
+}
+
+.snake-game__leaderboard-row--top-1 {
+  background: color-mix(in srgb, #d4a72c 14%, var(--cor-menu) 86%);
+  border: 1px solid color-mix(in srgb, #d4a72c 28%, transparent);
+}
+
+.snake-game__leaderboard-row--top-2 {
+  background: color-mix(in srgb, #c0c7d1 14%, var(--cor-menu) 86%);
+  border: 1px solid color-mix(in srgb, #c0c7d1 26%, transparent);
+}
+
+.snake-game__leaderboard-row--top-3 {
+  background: color-mix(in srgb, #b97a56 14%, var(--cor-menu) 86%);
+  border: 1px solid color-mix(in srgb, #b97a56 24%, transparent);
+}
+
 .snake-game__wrapper {
   position: relative;
   display: flex;
@@ -17,9 +244,7 @@
   gap: 14px;
 }
 
-.snake-game__wrapper--with-touch {
-  padding-bottom: 86px;
-}
+
 
 .snake-game__title {
   margin: 0;
@@ -40,6 +265,9 @@
 
 .snake-game__score {
   align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin: 0 auto;
   margin-bottom: 2px;
   padding: 8px 12px;
@@ -50,7 +278,21 @@
   font-weight: 700;
   font-size: 14px;
   backdrop-filter: blur(6px);
-  
+}
+
+.snake-game__score-player {
+  color: var(--cor-secun);
+}
+
+.snake-game__board-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.snake-game__board-stage > .snake-game__board,
+.snake-game__board-stage > .snake-game__overlay {
+  grid-area: 1 / 1;
 }
 
 .snake-game__board {
@@ -64,23 +306,39 @@
 
 .snake-game__overlay {
   position: absolute;
-  inset: 0;
-  z-index: 10;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  z-index: 12;
+  width: min(92vw, 360px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in srgb, var(--cor-bg) 78%, transparent);
   padding: 20px;
+  pointer-events: none;
+}
+
+.snake-game__menu-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: visible;
+
+  @media screen and (max-width: 600px) {
+    width: calc(100% - 40px);
+  }
 }
 
 .snake-game__menu {
   width: min(92%, 360px);
+  //height: 600px;
   background: color-mix(in srgb, var(--cor-menu) 92%, var(--cor-bg) 8%);
   border: 1px solid color-mix(in srgb, var(--cor-a-bg) 8%, transparent);
   border-radius: 18px;
   padding: 24px;
   text-align: center;
   box-shadow: 0 18px 40px color-mix(in srgb, var(--cor-sombra-menu) 28%, transparent);
+  pointer-events: auto;
+  
 }
 
 .snake-game__menu-title {
@@ -99,7 +357,7 @@
 .snake-game__input {
   width: 100%;
   height: 46px;
-  margin-top: 2px;
+  margin-top: 5px;
   padding: 0 14px;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--cor-a-bg) 10%, transparent);
@@ -107,6 +365,7 @@
   color: var(--cor-titulo);
   outline: none;
   font-size: 15px;
+  text-transform: uppercase;
 }
 
 .snake-game__input::placeholder {
@@ -124,7 +383,7 @@
   padding: 12px 16px;
   border-radius: 12px;
   border: none;
-  background: var(--cor-secun);
+  background: #7f5af0;
   color: #fffffe;
   font-weight: 800;
   font-size: 16px;
@@ -135,6 +394,13 @@
 
 .snake-game__button:hover:not(:disabled) {
   transform: translateY(-1px);
+}
+
+.snake-game__button--ghost {
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--cor-texto) 28%, transparent);
+  color: var(--cor-texto);
+  box-shadow: none;
 }
 
 .snake-game__button--disabled,
@@ -229,6 +495,27 @@
 @media screen and (max-width: 768px) {
   .snake-game {
     padding-inline: 0;
+  }
+
+  .snake-game__layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    //background-color: red !important;
+  }
+
+  .snake-game__leaderboard {
+    max-width: 100%;
+    width: 100%;
+    padding-top: 0;
+    //background-color: red !important;
+  }
+
+  .snake-game__leaderboard--menu {
+    position: static;
+    transform: none;
+    width: 100%;
+    
   }
 
   .snake-game__touch-controls {

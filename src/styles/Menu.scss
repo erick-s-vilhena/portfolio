@@ -1,6 +1,7 @@
 .Menu{
     display: flex;
     flex-shrink: 0;
+    align-items: center;
     //background-color: #00ffff1a;
 
     nav{
@@ -37,33 +38,57 @@
     }
 }
 
+@media screen and (min-width: 769px){
+    .Menu{
+        display: none;
+    }
+}
+
 @media screen and (max-width: 768px){
     .Menu{
         flex-direction: column-reverse;
         position: absolute;
-        top: 0;
+        top: 0px;
         right: -220px;
-        padding: 20px;
-        padding-bottom: 0;
-        padding-left: 0;
+        padding-top: 20px;
+        width: min(220px, calc(100vw - 24px));
         background-color: var(--cor-menu);
         box-shadow: 0px 0px 4px var(--cor-sombra-menu);
-        border-bottom-left-radius: 6px;
+        border-radius: 0 0 0 10px;
         transition: all 0.5s;
         z-index: 20;
         overflow: hidden;
+        gap: 16px;
+
+        .Btn_Tema{
+            width: 100%;
+            justify-content: flex-end;
+            margin-right: 20px;
+        }
 
         nav{
             flex-direction: column;
-            margin: 20px -20px 0px 0px;
+            margin: 0;
+            width: 100%;
+            gap: 2px;
             
 
             a{
-                padding: 20px;
-                padding-left: 20px;
-                height: auto;
-                justify-content: right;
+                display: grid;
+                grid-template-columns: 1fr 18px;
+                align-items: center;
+                column-gap: 14px;
+                height: 50px;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 10px 0;
+                justify-content: initial;
                 margin: 0;
+                padding: 0 20px !important;
+                white-space: nowrap;
+                text-align: right;
+                //border-top: 1px solid var(--cor-texto);
+                //background-color: rebeccapurple;
 
                 &:hover{
                     filter: brightness(90%);
@@ -72,9 +97,12 @@
                 
                 &.ativo{
                     border: none;
-
+                    filter: brightness(90%);
+                    background-color: var(--cor-menu);
+                    //border-top: 1px solid var(--cor-texto);
 
                     .square{
+                        display: block;
                         transform: rotate(45deg);
                         border: none;
                         background-color: var(--cor-prima);
@@ -83,10 +111,11 @@
 
                 .square{
                     display: block;
-                    width: 20px;
-                    height: 20px;
+                    width: 18px;
+                    height: 18px;
+                    min-width: 18px;
                     border: 3px solid var(--cor-secun);
-                    margin-left: 20px;
+                    margin-left: 0;
                     transition: all 0.5s;
                 }
             }

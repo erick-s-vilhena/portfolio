@@ -4,6 +4,8 @@
     --mobile-card-expanded-height: 595px;
     width: calc(100% + 20px);
     min-height: calc(100vh - 90px);
+    min-height: calc(100dvh - 90px);
+    padding-top: 50px;
     padding-bottom: 0;
     padding-right: 50px;
     z-index: 2;
@@ -11,12 +13,16 @@
     @media screen and (max-width: 768px) {
         width: 100%;
         min-height: max(calc(100vh - 90px), 645px);
-        padding-right: 0;
+        min-height: max(calc(100dvh - 90px), 645px);
+        padding-left: 20px;
+        padding-right: 20px;
         margin: 0 auto;
 
+        &.tem-projeto-ativo,
         &:has(.sigle-projetos:hover),
         &:has(.sigle-projetos:focus-within){
-            min-height: max(calc(100vh - 90px), 805px);
+            min-height: max(calc(100vh - 90px), 845px);
+            min-height: max(calc(100dvh - 90px), 845px);
         }
     }
 
@@ -304,6 +310,7 @@
             transform: scale(1.04);
         }
 
+        &.ativo .info,
         &:hover .info{
             opacity: 1;
             max-height: 320px;
@@ -311,12 +318,13 @@
             transform: translateY(0);
         }
 
-        &[data-offset="-1"]:hover{
-            transform: translateX(calc(-50% - 305px)) translateY(-20px) scale(1);
-        }
-
+        &.ativo[data-offset="0"],
         &[data-offset="0"]:hover{
             transform: translateX(-50%) translateY(-20px) scale(1);
+        }
+
+        &[data-offset="-1"]:hover{
+            transform: translateX(calc(-50% - 305px)) translateY(-20px) scale(1);
         }
 
         &[data-offset="1"]:hover{
@@ -514,6 +522,8 @@
             //background-color: red;
         }
 
+        &.tem-projeto-ativo .container,
+        &:has(.sigle-projetos.ativo) .container,
         &:has(.sigle-projetos:hover) .container,
         &:has(.sigle-projetos:focus-within) .container{
             height: var(--mobile-card-expanded-height);
@@ -573,7 +583,7 @@
 
     @media screen and (max-width: 600px) {
         --mobile-card-height: 410px;
-        --mobile-card-expanded-height: 575px;
+        --mobile-card-expanded-height: 615px;
 
         .container{
             height: var(--mobile-card-height);
@@ -608,7 +618,7 @@
 
     @media screen and (max-width: 480px) {
         --mobile-card-height: 390px;
-        --mobile-card-expanded-height: 545px;
+        --mobile-card-expanded-height: 585px;
 
         .container{
             height: var(--mobile-card-height);

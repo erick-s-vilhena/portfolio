@@ -1,15 +1,15 @@
 import '../styles/Certificados.scss';
 import { useEffect, useState } from 'react';
-import ImgWebDesigner from '../img/ImgWebDesigner.png'
-import ImgBancoDeDados from '../img/ImgBancoDeDados.png'
-import ImgFrontEndCompleto from '../img/ImgFrontEndComp.png'
-import ImgFirebase from '../img/ImgFirebase.png'
-import ImgFrontEnd2 from '../img/ImgFrontEnd2.png'
-import ImgJavaScriptCompleto from '../img/ImgJavaScriptCompleto.png'
-import ImgNodeJs from '../img/ImgNodeJs.png';
-import ImgDesignerWeb from '../img/ImgDesignerWeb.png';
-import ImgDesenvolvimentoWeb from '../img/ImgDesenvolvimentoWeb.png';
-import ImgLogicaDePrograma from '../img/ImgLogicaDePrograma.png';
+import ImgWebDesigner from '../img/ImgWebDesigner.webp'
+import ImgBancoDeDados from '../img/ImgBancoDeDados.webp'
+import ImgFrontEndCompleto from '../img/ImgFrontEndComp.webp'
+import ImgFirebase from '../img/ImgFirebase.webp'
+import ImgFrontEnd2 from '../img/ImgFrontEnd2.webp'
+import ImgJavaScriptCompleto from '../img/ImgJavaScriptCompleto.webp'
+import ImgNodeJs from '../img/ImgNodeJs.webp';
+import ImgDesignerWeb from '../img/ImgDesignerWeb.webp';
+import ImgDesenvolvimentoWeb from '../img/ImgDesenvolvimentoWeb.webp';
+import ImgLogicaDePrograma from '../img/ImgLogicaDePrograma.webp';
 import { FaExpand } from 'react-icons/fa';
 import { useContexto } from '../context/Contexto';
 

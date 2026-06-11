@@ -14,6 +14,11 @@ const itensMenu = [
     classe: 'Sobre-menu',
   },
   {
+    to: '/certificados',
+    texto: 'Certificados',
+    classe: 'Certificados',
+  },
+  {
     to: '/projetos',
     texto: 'Meus projetos',
     classe: 'Meus-Projetos',

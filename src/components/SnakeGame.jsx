@@ -11,6 +11,14 @@ const GOLDEN_APPLE_POINTS = 5;
 const GOLDEN_APPLE_MIN_TRIGGER = 5;
 const GOLDEN_APPLE_MAX_TRIGGER = 10;
 const GOLDEN_APPLE_DURATION_MS = 10000;
+const TABLET_LAYOUT_BREAKPOINT = 1220;
+const MOBILE_BREAKPOINT = 768;
+const RANKING_API_URL = "https://script.google.com/macros/s/AKfycbzX1XaLnNH2r9gqVlDa1a8iWRKEG4zFj2bKhwkPfwfTlirR4bVPsDOyzJ-Yj_JOy4jWNg/exec";
+const LEADERBOARD_LIMIT = 10;
+const PLAYER_NAME_MAX_LENGTH = 15;
+const PLAYER_NAME_PATTERN = /^[\p{L}\p{N}_]+$/u;
+let leaderboardCache = [];
+let leaderboardRequestPromise = null;
 
 const createInitialSnake = () => [
   { x: 4, y: 15 },
@@ -48,6 +56,130 @@ const shouldSpawnGoldenApple = (normalApplesEaten) => {
   return Math.random() * 100 < chancePercent;
 };
 
+const normalizePlayerKey = (player) =>
+  String(player || "")
+    .normalize("NFKC")
+    .trim()
+    .slice(0, PLAYER_NAME_MAX_LENGTH)
+    .toLocaleLowerCase("pt-BR");
+
+const normalizePlayerNameInput = (player) =>
+  String(player || "")
+    .normalize("NFKC")
+    .toLocaleUpperCase("pt-BR")
+    .slice(0, PLAYER_NAME_MAX_LENGTH);
+
+const validatePlayerName = (player) => {
+  const normalizedPlayer = normalizePlayerNameInput(player).trim();
+
+  if (!normalizedPlayer) {
+    return "Digite seu nome para iniciar.";
+  }
+
+  if (!PLAYER_NAME_PATTERN.test(normalizedPlayer)) {
+    return "Use apenas letras, numeros e _.";
+  }
+
+  return "";
+};
+
+const getLeaderboardIdentityKey = (item) => {
+  return `player:${normalizePlayerKey(item.player)}`;
+};
+
+const normalizeLeaderboard = (data) => {
+  if (!Array.isArray(data)) return [];
+
+  const bestScoresByPlayer = data.reduce((ranking, item) => {
+    const player = String(item.player || "").trim().slice(0, PLAYER_NAME_MAX_LENGTH);
+    const highScore = Number(item.highScore);
+    const identityKey = getLeaderboardIdentityKey({ player });
+
+    if (!player || !Number.isFinite(highScore)) return ranking;
+
+    const currentScore = ranking.get(identityKey)?.highScore ?? -Infinity;
+    if (highScore > currentScore) {
+      ranking.set(identityKey, { player, highScore });
+    }
+
+    return ranking;
+  }, new Map());
+
+  const leaderboard = Array.from(bestScoresByPlayer.values())
+    .sort((a, b) => b.highScore - a.highScore)
+    .slice(0, LEADERBOARD_LIMIT);
+
+  return leaderboard;
+};
+
+const fetchLeaderboard = async () => {
+  const response = await fetch(RANKING_API_URL, { cache: "no-store" });
+  if (!response.ok) throw new Error("Falha ao carregar ranking");
+
+  return normalizeLeaderboard(await response.json());
+};
+
+const setCachedLeaderboard = (leaderboard) => {
+  leaderboardCache = leaderboard;
+  leaderboardRequestPromise = Promise.resolve(leaderboard);
+};
+
+const getLeaderboard = () => {
+  if (leaderboardRequestPromise) return leaderboardRequestPromise;
+
+  leaderboardRequestPromise = fetchLeaderboard()
+    .then((leaderboard) => {
+      leaderboardCache = leaderboard;
+      return leaderboard;
+    })
+    .catch((error) => {
+      leaderboardRequestPromise = null;
+      throw error;
+    });
+
+  return leaderboardRequestPromise;
+};
+
+const submitScore = async ({ player, highScore }) => {
+  await fetch(RANKING_API_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({ action: "upsert", player, highScore }),
+  });
+};
+
+getLeaderboard().catch(() => {});
+
+function LeaderboardContent({ leaderboard }) {
+  return (
+    <>
+      <h2 className="snake-game__leaderboard-title">Ranking</h2>
+      <div className="snake-game__leaderboard-head">
+        <span>Jogador</span>
+        <span>Max.</span>
+      </div>
+      <div className="snake-game__leaderboard-body">
+        {leaderboard.length > 0 ? (
+          leaderboard.map(({ player, highScore }, index) => (
+            <div
+              key={`${player}-${highScore}-${index}`}
+              className={`snake-game__leaderboard-row ${index < 3 ? `snake-game__leaderboard-row--top-${index + 1}` : ""}`}
+            >
+              <span>{player.toLocaleUpperCase("pt-BR")}</span>
+              <strong>{highScore}</strong>
+            </div>
+          ))
+        ) : (
+          <div className="snake-game__leaderboard-row">
+            <span>Nenhuma pontuacao</span>
+            <strong>-</strong>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
 export default function SnakeGame() {
   const [snake, setSnake] = useState(createInitialSnake());
   const [direction, setDirection] = useState({ x: 1, y: 0 });
@@ -61,6 +193,9 @@ export default function SnakeGame() {
   const [playerName, setPlayerName] = useState("");
   const [showTouchControls, setShowTouchControls] = useState(false);
   const [touchArrowIcon, setTouchArrowIcon] = useState(setaCima);
+  const [deviceLabel, setDeviceLabel] = useState("desktop");
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [playerNameError, setPlayerNameError] = useState("");
 
   const moveLockedRef = useRef(false);
   const goldenAppleTimeoutRef = useRef(null);
@@ -69,10 +204,19 @@ export default function SnakeGame() {
   const appleRef = useRef({ x: 20, y: 20 });
   const goldenAppleRef = useRef(null);
   const normalApplesEatenRef = useRef(0);
-  const canStartGame = playerName.trim().length > 0;
+  const scoreSubmittedRef = useRef(false);
+  const leaderboardRef = useRef([]);
+  const playerNameValidationMessage = validatePlayerName(playerName);
+  const canStartGame = playerNameValidationMessage === "";
 
   const boardWidth = COLS * cellSize;
   const boardHeight = ROWS * cellSize;
+  const movementInstruction =
+    deviceLabel === "mobile"
+      ? "Toque nas setas da tela para mover a cobrinha."
+      : deviceLabel === "tablet"
+        ? "Use as setas da tela ou AWSD no teclado para mover a cobrinha."
+        : "Use WASD para mover a cobrinha.";
 
   const handleTouchControlPress = (event, newDirection) => {
     event.preventDefault();
@@ -129,7 +273,24 @@ export default function SnakeGame() {
     const mediaQuery = window.matchMedia("(pointer: coarse)");
 
     const updateTouchControls = () => {
-      setShowTouchControls(mediaQuery.matches || navigator.maxTouchPoints > 0);
+      const isMobileLayout = window.innerWidth <= MOBILE_BREAKPOINT;
+      const isTabletLayout =
+        window.innerWidth <= TABLET_LAYOUT_BREAKPOINT && !isMobileLayout;
+      const hasTouchPointer = mediaQuery.matches || navigator.maxTouchPoints > 0;
+
+      setShowTouchControls(hasTouchPointer || isMobileLayout || isTabletLayout);
+
+      if (isMobileLayout) {
+        setDeviceLabel("mobile");
+        return;
+      }
+
+      if (isTabletLayout) {
+        setDeviceLabel("tablet");
+        return;
+      }
+
+      setDeviceLabel("desktop");
     };
 
     updateTouchControls();
@@ -161,8 +322,15 @@ export default function SnakeGame() {
     return () => observer.disconnect();
   }, []);
 
-  const resetGame = () => {
-    if (!canStartGame) return;
+  const resetGame = async () => {
+    const trimmedPlayerName = normalizePlayerNameInput(playerName).trim();
+    const validationMessage = validatePlayerName(trimmedPlayerName);
+    if (validationMessage) {
+      setPlayerNameError(validationMessage);
+      return;
+    }
+
+    setPlayerNameError("");
 
     const initialSnake = createInitialSnake();
     clearGoldenAppleTimeout();
@@ -180,8 +348,91 @@ export default function SnakeGame() {
     normalApplesEatenRef.current = 0;
     setScore(0);
     setGameStatus("playing");
+    scoreSubmittedRef.current = false;
     moveLockedRef.current = false;
   };
+
+  const returnToStartMenu = () => {
+    const initialSnake = createInitialSnake();
+    clearGoldenAppleTimeout();
+    setSnake(initialSnake);
+    snakeRef.current = initialSnake;
+    setDirection({ x: 1, y: 0 });
+    setNextDirection({ x: 1, y: 0 });
+    nextDirectionRef.current = { x: 1, y: 0 };
+    const nextApple = getRandomApple(initialSnake);
+    setApple(nextApple);
+    appleRef.current = nextApple;
+    setGoldenApple(null);
+    goldenAppleRef.current = null;
+    setNormalApplesEaten(0);
+    normalApplesEatenRef.current = 0;
+    setScore(0);
+    setPlayerNameError("");
+    setGameStatus("start");
+    scoreSubmittedRef.current = false;
+    moveLockedRef.current = false;
+  };
+
+  useEffect(() => {
+    leaderboardRef.current = leaderboard;
+    leaderboardCache = leaderboard;
+  }, [leaderboard]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (leaderboardCache.length > 0) {
+      setLeaderboard(leaderboardCache);
+      return undefined;
+    }
+
+    getLeaderboard()
+      .then((ranking) => {
+        if (isMounted) setLeaderboard(ranking);
+      })
+      .catch(() => {
+        if (isMounted) setLeaderboard([]);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (gameStatus !== "gameover") return;
+    if (scoreSubmittedRef.current) return;
+
+    const player = playerName.trim().slice(0, PLAYER_NAME_MAX_LENGTH);
+    if (!player) return;
+
+    scoreSubmittedRef.current = true;
+
+    const identityKey = getLeaderboardIdentityKey({ player });
+    const previousHighScore =
+      leaderboardRef.current.find(
+        (entry) => getLeaderboardIdentityKey(entry) === identityKey
+      )?.highScore ?? -Infinity;
+
+    if (score <= previousHighScore) return;
+
+    setLeaderboard((currentLeaderboard) =>
+      {
+        const nextLeaderboard = normalizeLeaderboard([
+          ...currentLeaderboard,
+          { player, highScore: score },
+        ]);
+
+        setCachedLeaderboard(nextLeaderboard);
+        return nextLeaderboard;
+      }
+    );
+
+    submitScore({ player, highScore: score }).catch((error) => {
+      console.error("Falha ao enviar pontuacao:", error);
+    });
+  }, [gameStatus, playerName, score]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -364,147 +615,190 @@ export default function SnakeGame() {
   }, [snake, cellSize]);
 
   return (
-    <div className="snake-game">
-      <div className={`snake-game__wrapper${showTouchControls ? " snake-game__wrapper--with-touch" : ""}`}>
-        <h1 className="snake-game__title">Jogo da Cobrinha</h1>
+    <div className={`snake-game${gameStatus !== "playing" ? " snake-game--menu-open" : ""}`}>
+      <div className="snake-game__layout">
+        <aside className="snake-game__leaderboard" aria-label="Maiores pontuacoes">
+          <div className="snake-game__leaderboard-card">
+            <LeaderboardContent leaderboard={leaderboard} />
+          </div>
+        </aside>
+
+        <div className={`snake-game__wrapper${showTouchControls ? " snake-game__wrapper--with-touch" : ""}`}>
 
 
-        <div className="snake-game__score">Pontos: {score}</div>
+          <div className="snake-game__score">
+            {playerName.trim() && (
+              <span className="snake-game__score-player">{playerName.trim()}</span>
+            )}
+            <span>Pontos: {score}</span>
+          </div>
 
-        <div
-          className="snake-game__board"
-          style={{
-            width: boardWidth,
-            height: boardHeight,
-            backgroundSize: `${cellSize}px ${cellSize}px`,
-            backgroundImage: `
-              linear-gradient(to right, color-mix(in srgb, var(--cor-a-bg) 4%, transparent) 1px, transparent 1px),
-              linear-gradient(to bottom, color-mix(in srgb, var(--cor-a-bg) 4%, transparent) 1px, transparent 1px)
-            `,
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              left: apple.x * cellSize,
-              top: apple.y * cellSize,
-              width: cellSize,
-              height: cellSize,
-              background: "#ff6b57",
-              borderRadius: Math.max(2, cellSize * 0.2),
-              boxShadow: "0 0 0 2px color-mix(in srgb, #ff6b57 22%, transparent)",
-              zIndex: 2,
-            }}
-          />
-
-          {goldenApple && (
+          <div className="snake-game__board-stage">
             <div
+              className={`snake-game__board${gameStatus === "start" ? " snake-game__board--start" : ""}`}
               style={{
-                position: "absolute",
-                left: goldenApple.x * cellSize,
-                top: goldenApple.y * cellSize,
-                width: cellSize,
-                height: cellSize,
-                background: "#f3c623",
-                borderRadius: Math.max(2, cellSize * 0.2),
-                boxShadow: "0 0 0 2px color-mix(in srgb, #f3c623 35%, transparent), 0 0 14px color-mix(in srgb, #f3c623 58%, transparent)",
-                zIndex: 2,
+                width: boardWidth,
+                height: boardHeight,
+                backgroundSize: `${cellSize}px ${cellSize}px`,
+                backgroundImage: `
+                linear-gradient(to right, color-mix(in srgb, var(--cor-a-bg) 4%, transparent) 1px, transparent 1px),
+                linear-gradient(to bottom, color-mix(in srgb, var(--cor-a-bg) 4%, transparent) 1px, transparent 1px)
+              `,
               }}
-            />
-          )}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  left: apple.x * cellSize,
+                  top: apple.y * cellSize,
+                  width: cellSize,
+                  height: cellSize,
+                  background: "#ff6b57",
+                  borderRadius: Math.max(2, cellSize * 0.2),
+                  boxShadow: "0 0 0 2px color-mix(in srgb, #ff6b57 22%, transparent)",
+                  zIndex: 2,
+                }}
+              />
 
-          {snakeBody}
-
-          {gameStatus === "start" && (
-            <div className="snake-game__overlay">
-              <div className="snake-game__menu">
-                <h2 className="snake-game__menu-title">Bem-vindo</h2>
-                <p className="snake-game__menu-text">
-                  Use as setas do teclado ou WASD para mover a cobrinha.
-                </p>
-                <input
-                  type="text"
-                  value={playerName}
-                  onChange={(e) => setPlayerName(e.target.value)}
-                  placeholder="Digite seu nome"
-                  className="snake-game__input"
-                  maxLength={24}
+              {goldenApple && (
+                <div
+                  style={{
+                    position: "absolute",
+                    left: goldenApple.x * cellSize,
+                    top: goldenApple.y * cellSize,
+                    width: cellSize,
+                    height: cellSize,
+                    background: "#f3c623",
+                    borderRadius: Math.max(2, cellSize * 0.2),
+                    boxShadow: "0 0 0 2px color-mix(in srgb, #f3c623 35%, transparent), 0 0 14px color-mix(in srgb, #f3c623 58%, transparent)",
+                    zIndex: 2,
+                  }}
                 />
-                <button
-                  className={`snake-game__button${canStartGame ? "" : " snake-game__button--disabled"}`}
-                  onClick={resetGame}
-                  disabled={!canStartGame}
-                >
-                  Iniciar jogo
-                </button>
-              </div>
-            </div>
-          )}
+              )}
 
-          {gameStatus === "gameover" && (
-            <div className="snake-game__overlay">
-              <div className="snake-game__menu">
-                <h2 className="snake-game__menu-title">Você perdeu</h2>
-                <p className="snake-game__menu-text">
-                  {playerName.trim()}, sua pontuação final foi {score}.
-                </p>
-                <button className="snake-game__button" onClick={resetGame}>
-                  Jogar novamente
-                </button>
+              {snakeBody}
+            </div>
+
+            {gameStatus === "start" && (
+              <div className="snake-game__overlay snake-game__overlay--start">
+                <div className="snake-game__menu-stack">
+                  <div className="snake-game__menu">
+                    <h2 className="snake-game__menu-title">Jogo da Cobrinha</h2>
+  
+
+                    <p className="snake-game__menu-text">
+                      Digite seu nome para salvar sua pontuação. Se mais de uma pessoa usar o mesmo nome, apenas a maior pontuação desse nome será mantida no ranking.
+                    </p>
+                    <input
+                      type="text"
+                      value={playerName}
+                      onChange={(e) => {
+                        setPlayerName(normalizePlayerNameInput(e.target.value));
+                        if (playerNameError) setPlayerNameError("");
+                      }}
+                      placeholder="Seu nome de Usuario"
+                      className="snake-game__input"
+                      maxLength={PLAYER_NAME_MAX_LENGTH}
+                    />
+                    {playerNameError && (
+                      <p className="snake-game__menu-text" role="alert">
+                        {playerNameError}
+                      </p>
+                    )}
+                    <button
+                      className={`snake-game__button${canStartGame ? "" : " snake-game__button--disabled"}`}
+                      onClick={resetGame}
+                      disabled={!canStartGame}
+                    >
+                      Iniciar jogo
+                    </button>
+
+                    <div className="snake-game__leaderboard snake-game__leaderboard--menu" aria-label="Maiores pontuacoes">
+                      <div className="snake-game__leaderboard-card snake-game__leaderboard-card--menu">
+                        <LeaderboardContent leaderboard={leaderboard} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+            )}
+
+            {gameStatus === "gameover" && (
+              <div className="snake-game__overlay">
+                <div className="snake-game__menu-stack">
+                  <div className="snake-game__menu">
+                    <h2 className="snake-game__menu-title">Você perdeu</h2>
+                    <p className="snake-game__menu-text">
+                      {playerName.trim()}, sua pontuação final foi {score}.
+                    </p>
+                    <button className="snake-game__button" onClick={resetGame}>
+                      Jogar novamente
+                    </button>
+                    <button className="snake-game__button snake-game__button--ghost" onClick={returnToStartMenu}>
+                      Voltar ao menu inicial
+                    </button>
+
+                    <div className="snake-game__leaderboard snake-game__leaderboard--menu" aria-label="Maiores pontuacoes">
+                      <div className="snake-game__leaderboard-card snake-game__leaderboard-card--menu">
+                        <LeaderboardContent leaderboard={leaderboard} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {showTouchControls && (
+            <div className="snake-game__touch-controls" aria-label="Controles por toque">
+              <div className="snake-game__touch-spacer" aria-hidden="true"></div>
+              <button
+                type="button"
+                className="snake-game__touch-button snake-game__touch-button--up"
+                onTouchStart={(event) => handleTouchControlPress(event, { x: 0, y: -1 })}
+                onMouseDown={(event) => handleTouchControlPress(event, { x: 0, y: -1 })}
+                onClick={() => handleDirectionChange({ x: 0, y: -1 })}
+                aria-label="Mover para cima"
+              >
+                <img src={touchArrowIcon} alt="" className="snake-game__touch-icon snake-game__touch-icon--up" />
+              </button>
+              <div className="snake-game__touch-spacer" aria-hidden="true"></div>
+              <button
+                type="button"
+                className="snake-game__touch-button snake-game__touch-button--left"
+                onTouchStart={(event) => handleTouchControlPress(event, { x: -1, y: 0 })}
+                onMouseDown={(event) => handleTouchControlPress(event, { x: -1, y: 0 })}
+                onClick={() => handleDirectionChange({ x: -1, y: 0 })}
+                aria-label="Mover para a esquerda"
+              >
+                <img src={touchArrowIcon} alt="" className="snake-game__touch-icon snake-game__touch-icon--left" />
+              </button>
+              <div className="snake-game__touch-spacer snake-game__touch-spacer--center" aria-hidden="true"></div>
+              <button
+                type="button"
+                className="snake-game__touch-button snake-game__touch-button--right"
+                onTouchStart={(event) => handleTouchControlPress(event, { x: 1, y: 0 })}
+                onMouseDown={(event) => handleTouchControlPress(event, { x: 1, y: 0 })}
+                onClick={() => handleDirectionChange({ x: 1, y: 0 })}
+                aria-label="Mover para a direita"
+              >
+                <img src={touchArrowIcon} alt="" className="snake-game__touch-icon snake-game__touch-icon--right" />
+              </button>
+              <div className="snake-game__touch-spacer" aria-hidden="true"></div>
+              <button
+                type="button"
+                className="snake-game__touch-button snake-game__touch-button--down"
+                onTouchStart={(event) => handleTouchControlPress(event, { x: 0, y: 1 })}
+                onMouseDown={(event) => handleTouchControlPress(event, { x: 0, y: 1 })}
+                onClick={() => handleDirectionChange({ x: 0, y: 1 })}
+                aria-label="Mover para baixo"
+              >
+                <img src={touchArrowIcon} alt="" className="snake-game__touch-icon snake-game__touch-icon--down" />
+              </button>
+              <div className="snake-game__touch-spacer" aria-hidden="true"></div>
             </div>
           )}
         </div>
-
-        {showTouchControls && (
-          <div className="snake-game__touch-controls" aria-label="Controles por toque">
-            <div className="snake-game__touch-spacer" aria-hidden="true"></div>
-            <button
-              type="button"
-              className="snake-game__touch-button snake-game__touch-button--up"
-              onTouchStart={(event) => handleTouchControlPress(event, { x: 0, y: -1 })}
-              onMouseDown={(event) => handleTouchControlPress(event, { x: 0, y: -1 })}
-              onClick={() => handleDirectionChange({ x: 0, y: -1 })}
-              aria-label="Mover para cima"
-            >
-              <img src={touchArrowIcon} alt="" className="snake-game__touch-icon snake-game__touch-icon--up" />
-            </button>
-            <div className="snake-game__touch-spacer" aria-hidden="true"></div>
-            <button
-              type="button"
-              className="snake-game__touch-button snake-game__touch-button--left"
-              onTouchStart={(event) => handleTouchControlPress(event, { x: -1, y: 0 })}
-              onMouseDown={(event) => handleTouchControlPress(event, { x: -1, y: 0 })}
-              onClick={() => handleDirectionChange({ x: -1, y: 0 })}
-              aria-label="Mover para a esquerda"
-            >
-              <img src={touchArrowIcon} alt="" className="snake-game__touch-icon snake-game__touch-icon--left" />
-            </button>
-            <div className="snake-game__touch-spacer snake-game__touch-spacer--center" aria-hidden="true"></div>
-            <button
-              type="button"
-              className="snake-game__touch-button snake-game__touch-button--right"
-              onTouchStart={(event) => handleTouchControlPress(event, { x: 1, y: 0 })}
-              onMouseDown={(event) => handleTouchControlPress(event, { x: 1, y: 0 })}
-              onClick={() => handleDirectionChange({ x: 1, y: 0 })}
-              aria-label="Mover para a direita"
-            >
-              <img src={touchArrowIcon} alt="" className="snake-game__touch-icon snake-game__touch-icon--right" />
-            </button>
-            <div className="snake-game__touch-spacer" aria-hidden="true"></div>
-            <button
-              type="button"
-              className="snake-game__touch-button snake-game__touch-button--down"
-              onTouchStart={(event) => handleTouchControlPress(event, { x: 0, y: 1 })}
-              onMouseDown={(event) => handleTouchControlPress(event, { x: 0, y: 1 })}
-              onClick={() => handleDirectionChange({ x: 0, y: 1 })}
-              aria-label="Mover para baixo"
-            >
-              <img src={touchArrowIcon} alt="" className="snake-game__touch-icon snake-game__touch-icon--down" />
-            </button>
-            <div className="snake-game__touch-spacer" aria-hidden="true"></div>
-          </div>
-        )}
       </div>
     </div>
   );

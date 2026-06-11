@@ -65,7 +65,7 @@ export default function Inicio(){
                       aria-label='E-mail'
                       data-label='E-mail'><CgMail/></button>
 
-                  <a href='https://drive.google.com/file/d/1DL-zjk_awGWAzrbJPufkkp4gFuxPGZOQ/view?usp=sharing' 
+                  <a href='https://drive.google.com/file/d/1xhVvvloqRBEdd-TPT4MBdAtXaMucA2ux/view?usp=sharing' 
                       target='_blank'
                       rel="noopener noreferrer"
                       aria-label='Curriculo'

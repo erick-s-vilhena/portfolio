@@ -4,10 +4,12 @@
     align-items: center;
     flex-shrink: 1;
     height: 100vh;
+    height: 100dvh;
     min-height: 520px;
     z-index: 10;
     position: relative;
     overflow: hidden;
+    padding-top: 50px;
 
     .texto{
         color: var(--cor-texto);
@@ -243,10 +245,10 @@
         flex-direction: column;
         height: auto;
         min-height: auto;
-        padding: 24px 0 40px;
+        padding: 24px 20px 40px;
 
         .texto{
-            padding: 56px 20px 28px;
+            padding: 56px 0 28px;
             width: 100%;
             justify-content: flex-start;
 
@@ -294,7 +296,7 @@
         .imagem{
             width: 100%;
             min-width: initial;
-            padding: 8px 16px 0;
+            padding: 8px 0 0;
 
             .aux{
                 max-width: 320px;
@@ -302,9 +304,13 @@
         }
     }
 
+    @media screen and (max-width: 768px) {
+        padding-inline: 20px;
+    }
+
     @media screen and (max-width: 560px) {
         .texto{
-            padding: 48px 18px 24px;
+            padding: 48px 0 24px;
 
             .aux{
                 h3{

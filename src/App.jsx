@@ -18,6 +18,15 @@ const ROUTE_TRANSITION_MS = 700;
 const ROUTE_SCROLL_LOCK_MS = 820;
 const EDGE_SCROLL_COOLDOWN_MS = 180;
 const EDGE_WHEEL_ARM_MS = 420;
+const ROUTE_EDGE_THRESHOLD_PX = 4;
+const TOUCH_ROUTE_EDGE_THRESHOLD_PX = 50;
+const APP_IMAGE_ASSETS = Object.values(
+  import.meta.glob('./img/*.{png,jpg,jpeg,svg,webp,avif}', {
+    eager: true,
+    import: 'default',
+  })
+);
+const imagensProjetosPrecarregadas = new Set();
 
 function Layout() {
   const { certificadoAberto, habilidadeOpen } = useContexto();
@@ -51,6 +60,32 @@ function Layout() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const precarregarImagens = () => {
+      APP_IMAGE_ASSETS.forEach((img) => {
+        if (imagensProjetosPrecarregadas.has(img)) return;
+
+        const imagem = new window.Image();
+        imagem.decoding = 'async';
+        imagem.src = img;
+        imagensProjetosPrecarregadas.add(img);
+      });
+    };
+
+    if ('requestIdleCallback' in window) {
+      const idleId = window.requestIdleCallback(precarregarImagens, {
+        timeout: 1200,
+      });
+
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(precarregarImagens, 450);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   useEffect(() => {
     lastWindowScrollYRef.current = window.scrollY;
@@ -140,6 +175,10 @@ function Layout() {
     }
 
     function navigateByDirection(direction) {
+      return navigateByDirectionWithThreshold(direction, ROUTE_EDGE_THRESHOLD_PX);
+    }
+
+    function navigateByDirectionWithThreshold(direction, edgeThresholdPx) {
       if (certificadoAberto || habilidadeOpen) return false;
       if (wheelLockRef.current) return false;
       if (Date.now() - lastContentScrollAtRef.current < EDGE_SCROLL_COOLDOWN_MS) {
@@ -155,8 +194,8 @@ function Layout() {
       const scrollTop = window.scrollY;
       const maxScrollTop =
         document.documentElement.scrollHeight - window.innerHeight;
-      const atTop = scrollTop <= 4;
-      const atBottom = maxScrollTop - scrollTop <= 4;
+      const atTop = scrollTop <= edgeThresholdPx;
+      const atBottom = maxScrollTop - scrollTop <= edgeThresholdPx;
 
       if (direction > 0 && !atBottom) return false;
       if (direction < 0 && !atTop) return false;
@@ -186,8 +225,8 @@ function Layout() {
       const scrollTop = window.scrollY;
       const maxScrollTop =
         document.documentElement.scrollHeight - window.innerHeight;
-      const atTop = scrollTop <= 4;
-      const atBottom = maxScrollTop - scrollTop <= 4;
+      const atTop = scrollTop <= ROUTE_EDGE_THRESHOLD_PX;
+      const atBottom = maxScrollTop - scrollTop <= ROUTE_EDGE_THRESHOLD_PX;
       const atEdge = direction > 0 ? atBottom : atTop;
 
       if (!atEdge) {
@@ -254,8 +293,9 @@ function Layout() {
       const deltaX = touchStartXRef.current - touch.clientX;
       const verticalSwipe = Math.abs(deltaY) > Math.abs(deltaX);
       const pullingDown = deltaY < -12;
-      const startedAtTop = touchStartScrollTopRef.current <= 4;
-      const startedElementAtTop = touchStartElementScrollTopRef.current <= 4;
+      const startedAtTop = touchStartScrollTopRef.current <= TOUCH_ROUTE_EDGE_THRESHOLD_PX;
+      const startedElementAtTop =
+        touchStartElementScrollTopRef.current <= TOUCH_ROUTE_EDGE_THRESHOLD_PX;
       const hasInnerScrollable = touchScrollElementRef.current != null;
       const canGoPrevious =
         !certificadoAberto &&
@@ -289,13 +329,16 @@ function Layout() {
       if (Math.abs(deltaX) > Math.abs(deltaY)) return;
 
       const direction = deltaY > 0 ? 1 : -1;
-      const startedAtTop = touchStartScrollTopRef.current <= 4;
+      const startedAtTop = touchStartScrollTopRef.current <= TOUCH_ROUTE_EDGE_THRESHOLD_PX;
       const startedAtBottom =
-        touchStartMaxScrollTopRef.current - touchStartScrollTopRef.current <= 4;
+        touchStartMaxScrollTopRef.current - touchStartScrollTopRef.current <=
+        TOUCH_ROUTE_EDGE_THRESHOLD_PX;
       const scrollFoiConsumido = touchScrollConsumidoRef.current;
-      const startedElementAtTop = touchStartElementScrollTopRef.current <= 4;
+      const startedElementAtTop =
+        touchStartElementScrollTopRef.current <= TOUCH_ROUTE_EDGE_THRESHOLD_PX;
       const startedElementAtBottom =
-        touchStartElementMaxScrollTopRef.current - touchStartElementScrollTopRef.current <= 4;
+        touchStartElementMaxScrollTopRef.current - touchStartElementScrollTopRef.current <=
+        TOUCH_ROUTE_EDGE_THRESHOLD_PX;
       const hasInnerScrollable = touchScrollElementRef.current != null;
 
       touchScrollElementRef.current = null;
@@ -309,7 +352,7 @@ function Layout() {
       if (hasInnerScrollable && direction < 0 && !startedElementAtTop) return;
       if (scrollFoiConsumido) return;
 
-      navigateByDirection(direction);
+      navigateByDirectionWithThreshold(direction, TOUCH_ROUTE_EDGE_THRESHOLD_PX);
     }
 
     window.addEventListener('wheel', handleWheel, { passive: false });

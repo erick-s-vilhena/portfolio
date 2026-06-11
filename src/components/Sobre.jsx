@@ -25,7 +25,7 @@ export default function Sobre() {
 
               <div className="contianer-btn">
                 <a
-                  href="https://drive.google.com/file/d/1DL-zjk_awGWAzrbJPufkkp4gFuxPGZOQ/view?usp=sharing"
+                  href="https://drive.google.com/file/d/1xhVvvloqRBEdd-TPT4MBdAtXaMucA2ux/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
