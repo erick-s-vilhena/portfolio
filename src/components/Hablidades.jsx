@@ -1,5 +1,6 @@
 import '../styles/Habilidades.scss';
 import Javascript from '../img/js.png';
+import Typescript from '../img/typescript.svg';
 import Html from '../img/html.png';
 import Css from '../img/css.png';
 import React from '../img/react.png';
@@ -30,6 +31,11 @@ const infoHablidades = [
         habilidade: 'CSS',
         logo: Css,
         descricao: "CSS é a linguagem usada para definir o estilo de uma página web. Com o CSS, você pode mudar cores, fontes, tamanhos, espaçamentos, posicionamento dos elementos e deixar o site mais bonito e agradável visualmente. Ele trabalha junto com o HTML, que fornece a estrutura da página."
+    },
+    {
+        habilidade: 'TypeScript',
+        logo: Typescript,
+        descricao: "TypeScript é uma linguagem baseada em JavaScript que adiciona tipagem estática. Ela ajuda a identificar erros durante o desenvolvimento e facilita a organização e manutenção de aplicações, incluindo projetos com React."
     },
     {
         habilidade: 'React',

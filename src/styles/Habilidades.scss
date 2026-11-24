@@ -183,6 +183,12 @@
                 }
             }
 
+            &[data-skill='TypeScript']{
+                &::before{
+                    background-color: var(--ts);
+                }
+            }
+
             &[data-skill='HTML']{
                 &::before{
                     background-color: var(--html);

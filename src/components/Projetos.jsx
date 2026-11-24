@@ -3,6 +3,7 @@ import '../styles/Projetos.scss';
 import ImgProMetas from '../img/pro-metas.webp';
 import ImgProNivelameto from '../img/pro-nivelamento.webp';
 import ImgProGeoPortaL from '../img/pro-geoportal.webp';
+import ImgProGeoportalV2 from '../img/pro-geoportal-v2.png';
 import ImgProCrossRoad from '../img/pro-crossroad.webp';
 import ImgProProtejaTerra from '../img/pro-protejaterra.webp';
 import ImgProLand1 from '../img/pro-land-1.webp';
@@ -112,6 +113,14 @@ export const PROJETOS = [
     link: 'https://geoportal-ppgedam.web.app/',
     recursos: ['JS', 'HTML', 'CSS', 'React', 'Sass', 'Firebase', 'Node'],
     descricao: 'Um portal geográfico para o Programa de Pós-Graduação em Desenvolvimento na Amazônia (PPGDAM/UFPA)'
+  },
+  {
+    img: ImgProGeoportalV2,
+    titulo: 'Geoportal PPGDAM v2',
+    data: '2026',
+    link: 'https://geoportal-ppgedam.pages.dev/',
+    recursos: ['JS', 'HTML', 'CSS', 'TypeScript', 'React'],
+    descricao: 'Segunda versão do portal geográfico do PPGDAM/UFPA, com mapa interativo para consultar informações de mestres e doutores na Amazônia.'
   },
   {
     img: ImgProNivelameto,
@@ -395,17 +404,19 @@ export default function Projetos() {
                   </div>
                   <p>{elemento.descricao}</p>
 
-                  <div className="btn">
-                    <a
-                      href={elemento.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span>
-                        Acessar projeto <BsArrowRight />
-                      </span>
-                    </a>
-                  </div>
+                  {elemento.link && (
+                    <div className="btn">
+                      <a
+                        href={elemento.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span>
+                          Acessar projeto <BsArrowRight />
+                        </span>
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             );

@@ -172,6 +172,7 @@
                     line-height: 0;
 
                     &.JS{ background-color: var(--js); }
+                    &.TypeScript{ background-color: var(--ts); }
                     &.HTML{ background-color: var(--html); }
                     &.CSS{ background-color: var(--css); }
                     &.React{ background-color: var(--react); }
